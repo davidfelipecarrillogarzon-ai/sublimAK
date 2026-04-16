@@ -43,6 +43,7 @@ public static void aplicarTema() {
         //Suma de Dinero
                         float dineroASumar = 0;
                         String[] billeteraAMover= {"Efectivo", "Nequi"};
+                        try{
                         int billeteraDeRetiro = JOptionPane.showOptionDialog(null, "¿Va A Realizar El Movimiento En Efectivo O Nequi?", "Menu Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, billeteraAMover, billeteraAMover[0]);
                         if(billeteraDeRetiro == 1){
                             dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("Escriba el dinero que va a sumar."));
@@ -58,31 +59,41 @@ public static void aplicarTema() {
                         }
                         dineroDigital += dineroASumar;
                         }
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Pusó valores incorrectos.");
+                            sumarDinero();
+                        }
+                        
     }
     public static void restarDinero(){
         //Resta de dinero
                         String[] billeteraAMover= {"Efectivo", "Nequi"};
                         int billeteraDeRetiro = JOptionPane.showOptionDialog(null, "¿Va A Realizar El Movimiento En Efectivo O Nequi?", "Menu Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, billeteraAMover, billeteraAMover[0]);
+                        try{
                         if(billeteraDeRetiro == 1){
-                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("Escriba el dinero que va a retirar."));
+                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Retirar."));
                         while (dineroARetirar <1000 || dineroARetirar > dinero) {
-                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El monto que desea retirar es incorrecto no puede retirar menos de 1000 ni mas de " + dinero + "$"));
+                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El Monto Que Desea Retirar Es Incorrecto No Puede Retirar Menos De 1000 Ni Más De " + dinero + "$"));
                         }
                         dinero -= dineroARetirar;
                         }else{
-                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("Escriba el dinero que va a retirar(Dinero Digital)."));
+                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Retirar (Dinero Digital)."));
                         while (dineroARetirar <1000 || dineroARetirar > dinero) {
                             dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El monto que desea retirar es incorrecto no puede retirar menos de 1000 ni mas de " + dinero + "$"));
                         }
                         dineroDigital -= dineroARetirar;
+                        }}catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Pusó valores incorrectos.");
+                            restarDinero();
                         }
     }
-    public static void menuCuentas(){
+
+    public static void menuCuentas(){//Función para el menu de cuenta
         String[] botonesDinero = {"Ver total", "Restar Dinero A La Cuenta", "Sumar Dinero A La Cuenta", "Retroceder Al Menu Principal", "Salir"};
         int opcionMenuCuentas = JOptionPane.showOptionDialog(null, "¿Que desea hacer?", "Menu Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesDinero, botonesDinero[0]);
         switch (opcionMenuCuentas) {
             case 0:
-                JOptionPane.showMessageDialog(null, "Su Dinero TotaL Es: " + (dinero + dineroDigital) + "$\nDinero en efectivo: " + dinero + "$" + "\nDinero en Nequi: " + dineroDigital + "$");
+                JOptionPane.showMessageDialog(null, "Su Dinero Total Es: " + (dinero + dineroDigital) + "$\nDinero en efectivo: " + dinero + "$" + "\nDinero en Nequi: " + dineroDigital + "$");
                 menuCuentas();
                 break;
             case 1:
@@ -101,10 +112,10 @@ public static void aplicarTema() {
         }
 
     }
-    public static void inventario(){
+    public static void inventario(){//funcion menu inventario
         String[] botonesMenuInventario = {"Ver Productos Agregados", "Modificar Inventario", "Agregar Stock", "Menu Principal", "Salir"};
         int opcionMenuInventario = JOptionPane.showOptionDialog(null, "Productos E Inventario", "Menu Inventario", 
-            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMenuInventario, botonesMenuInventario[0]);
+        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMenuInventario, botonesMenuInventario[0]);
         switch (opcionMenuInventario) {
             case 0:
                 if (i == 0){JOptionPane.showMessageDialog(null, "No Hay Productos Agregados Aun.");
@@ -119,22 +130,37 @@ public static void aplicarTema() {
                 break;
         }
     }
-    public static void verProductos(){
-        String mensaje = "Nombre\tPrecio\tStock\n";
+    public static void verProductos(){//Función para ver los prouctos del inventario
+        if(nombres[0].isEmpty()){
+            JOptionPane.showMessageDialog(null, "El Inventario Esta Vacio Aun...");
+        }
+        String mensaje = "Nombre \t  Precio \t  Stock \t  Codigo\n";
         for(i = 0; i < nombres.length; i++){
-            mensaje += nombres[i] + "\t" + precios[i] + "\t" +stocks[i] + "\t" + codigos[i] + "\n"; 
+            mensaje += nombres[i] + "\t  " + precios[i] + "\t  " + stocks[i] + "\t       " + codigos[i] + "\n"; 
         }
         JOptionPane.showMessageDialog(null, mensaje);
     }
-    public static void agregarProductos(){
+    public static void agregarProductos(){//Función para agregar productos en el inventario usando arrays
         nombres[i] = JOptionPane.showInputDialog("Escriba El Nombre Del Producto Número " + (i + 1));
         precios[i] = Double.parseDouble(JOptionPane.showInputDialog("Escriba El Precio De " + nombres[i]));
         stocks[i] = Integer.parseInt(JOptionPane.showInputDialog("Escriba El Stock Disponible De " + nombres[i]));
         codigos[i] = Integer.parseInt(JOptionPane.showInputDialog("Escriba EL COdigo De" + nombres[i]));
         i++;
     }
-    public static void menu(){
-        String[] botonesMenuPrincipal = {"Ver Dinero", "Productos E Inventario", "Salir"};
+    public static void registrarventa(){//Función para registrar las ventas
+        String buscarProducto = JOptionPane.showInputDialog("Escriba El Nombre Del Producto");
+        for(int i = 0; i < nombres.length; i++){
+            if (nombres[i].equals(buscarProducto)){
+                int cantidadVendida = Integer.parseInt(JOptionPane.showInputDialog("Escriba La Cantidad De " + nombres[i] + " Vendida"));
+                while(cantidadVendida > stocks[i]){
+                    cantidadVendida = Integer.parseInt(JOptionPane.showInputDialog("El Stock Disponible Para " + nombres[i] + " Es De " + stocks[i] + ", Su Requerimiento Es De " + stocks[i] + " No hay Stock Suficiente"));
+                }
+                stocks[i] -= cantidadVendida;
+            }
+        }
+    }
+    public static void menu(){//Función del menu principal
+        String[] botonesMenuPrincipal = {"Ver Dinero", "Productos E Inventario", "Registrar venta","Salir"};
         int opcionMenuPrincipal = JOptionPane.showOptionDialog(null, "¿Que quiere hacer hoy?", "Menu principal", 
             JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMenuPrincipal, botonesMenuPrincipal[0]);
             switch (opcionMenuPrincipal){
@@ -145,10 +171,14 @@ public static void aplicarTema() {
                     inventario();
                     break;
                 case 2:
+                    registrarventa();
+                    break;
+                case 3:
                     System.exit(0);
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "La opcion elegida es incorrecta....");
+                    JOptionPane.showMessageDialog(null, "La Opción Elegida Es Incorrecta....");
+                    menu();
                     break;
             }
 
