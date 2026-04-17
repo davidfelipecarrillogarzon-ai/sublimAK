@@ -149,6 +149,10 @@ public static void aplicarTema() {
     }
     public static void registrarventa(){//Función para registrar las ventas
         String buscarProducto = JOptionPane.showInputDialog("Escriba El Nombre Del Producto");
+        if(nombres[0] == null){
+          JOptionPane.showMessageDialog(null, "No Hay " + buscarProducto + " Registrado En El Inventario");
+          menu();
+        }
         for(int i = 0; i < nombres.length; i++){
             if (nombres[i].equals(buscarProducto)){
                 int cantidadVendida = Integer.parseInt(JOptionPane.showInputDialog("Escriba La Cantidad De " + nombres[i] + " Vendida"));
