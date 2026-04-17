@@ -16,29 +16,6 @@ public class App {
     static int [] stocks = new int[100];
     static int[] codigos = new int[100];
 
-    //Funcion de personalizacion de interfaz para JOptionPane creada por ChatGPT:
-public static void aplicarTema() {
-        Color fondo = new Color(18, 18, 18);
-        Color texto = new Color(230, 230, 230);
-        Color boton = new Color(40, 40, 40);
-
-        Font fuente = new Font("Segoe UI", Font.PLAIN, 16);
-
-        UIManager.put("Panel.background", fondo);
-        UIManager.put("OptionPane.background", fondo);
-
-        UIManager.put("OptionPane.messageForeground", texto);
-
-        UIManager.put("Button.background", boton);
-        UIManager.put("Button.foreground", texto);
-
-        UIManager.put("OptionPane.messageFont", fuente);
-        UIManager.put("Button.font", fuente);
-    }
-
-
-
-
     public static void sumarDinero(){
         //Suma de Dinero
                         float dineroASumar = 0;
@@ -194,7 +171,14 @@ public static void aplicarTema() {
 
         }
     public static void main(String[] args) throws Exception{
-        aplicarTema();
+        JFrame ventana = new JFrame("SublimAK");
+
+        ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);//PARA PANTALLA COMPLETA AJUSTADA A MONITOR
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventana.setVisible(true);
+        
+        ventana.getContentPane().setBackground(Color.DARK_GRAY);//PARA PONER EL FRAME EN MODO OSCURO(SOLO APLICA PARA LA VENTANA)
+
         menu();
     }
 }
