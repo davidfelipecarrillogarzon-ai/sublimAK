@@ -42,25 +42,31 @@ public static void aplicarTema() {
     public static void sumarDinero(){
         //Suma de Dinero
                         float dineroASumar = 0;
-                        String[] billeteraAMover= {"Efectivo", "Nequi"};
+                        String[] billeteraAMover= {"Efectivo", "Nequi", "Volver"};
                         try{
                         int billeteraDeRetiro = JOptionPane.showOptionDialog(null, "¿Va A Realizar El Movimiento En Efectivo O Nequi?", "Menu Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, billeteraAMover, billeteraAMover[0]);
-                        if(billeteraDeRetiro == 1){
-                            dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("Escriba el dinero que va a sumar."));
+                        if(billeteraDeRetiro == 0){
+                            dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Agregar"));
                         while (dineroASumar <1000) {
-                            dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("El monto que desea añadir a la cuenta es incorrecto no puede sumar menos de 1000$"));
+                            dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("El Monto Que Desea Añadir A La Cuenta Es Incorrecto No Puede Agregar Menos De 1000$"));
                         }
                         dinero += dineroASumar;
-                        JOptionPane.showMessageDialog(null, "El dinero en efectivo ahorrado es: " + dinero);
-                        }else{
-                            dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("Escriba la suma del dinero que va a añadir(Dinero Digital)."));
+                        JOptionPane.showMessageDialog(null, "El dinero en efectivo ahorrado es " + dinero + "$");
+                        menuCuentas();
+                        }else if(billeteraDeRetiro == 1){
+                            dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Agregar(Dinero Digital)."));
                         while (dineroASumar <1000) {
-                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El monto que desea retirar es incorrecto no puede retirar menos de 1000 ni mas de " + dinero + "$"));
+                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El Monto Que Desea Agregar Es Incorrecto No Puede Agregar Menos De 1000"));
                         }
                         dineroDigital += dineroASumar;
+                        }else if(billeteraDeRetiro == -1){
+                            JOptionPane.showMessageDialog(null, "Salió Del Programa");
+                            System.exit(0);
+                        }else{
+                            menuCuentas();
                         }
                         }catch(Exception e){
-                            JOptionPane.showMessageDialog(null, "Pusó valores incorrectos.");
+                            JOptionPane.showMessageDialog(null, "Pusó Valores Incorrectos.");
                             sumarDinero();
                         }
                         
