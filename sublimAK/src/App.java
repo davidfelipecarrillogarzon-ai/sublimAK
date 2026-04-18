@@ -1,7 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class App {
+public class App extends JFrame{
+    JFrame ventana;
+
+    public App(){
+    ventana = new JFrame("SublimAK");
+    ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);//PARA PANTALLA COMPLETA AJUSTADA A MONITOR
+    ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
+    ventana.setVisible(true);
+    ventana.getContentPane().setBackground(Color.DARK_GRAY);
+    java.net.URL url = getClass().getResource("iconoSK.png");
+    setIconImage(new ImageIcon(url).getImage());//ICONO
+    }//PARA PONER EL FRAME EN MODO OSCURO(SOLO APLICA PARA LA VENTANA)
+    
     static int i = 0;
 
     //Variables de cuenta
@@ -16,12 +28,12 @@ public class App {
     static int [] stocks = new int[100];
     static int[] codigos = new int[100];
 
-    public static void sumarDinero(){
+    public void sumarDinero(){
         //Suma de Dinero
                         float dineroASumar = 0;
                         String[] billeteraAMover= {"Efectivo", "Nequi", "Volver"};
                         try{
-                        int billeteraDeRetiro = JOptionPane.showOptionDialog(null, "¿Va A Realizar El Movimiento En Efectivo O Nequi?", "Menu Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, billeteraAMover, billeteraAMover[0]);
+                        int billeteraDeRetiro = JOptionPane.showOptionDialog(ventana, "¿Va A Realizar El Movimiento En Efectivo O Nequi?", "Menú Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, billeteraAMover, billeteraAMover[0]);
                         if(billeteraDeRetiro == 0){
                             dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Agregar"));
                         while (dineroASumar <1000) {
@@ -37,21 +49,21 @@ public class App {
                         }
                         dineroDigital += dineroASumar;
                         }else if(billeteraDeRetiro == -1){
-                            JOptionPane.showMessageDialog(null, "Salió Del Programa");
+                            JOptionPane.showMessageDialog(ventana, "Salió Del Programa");
                             System.exit(0);
                         }else{
                             menuCuentas();
                         }
                         }catch(Exception e){
-                            JOptionPane.showMessageDialog(null, "Pusó Valores Incorrectos.");
+                            JOptionPane.showMessageDialog(ventana, "Pusó Valores Incorrectos.");
                             sumarDinero();
                         }
                         
     }
-    public static void restarDinero(){
+    public void restarDinero(){
         //Resta de dinero
                         String[] billeteraAMover= {"Efectivo", "Nequi"};
-                        int billeteraDeRetiro = JOptionPane.showOptionDialog(null, "¿Va A Realizar El Movimiento En Efectivo O Nequi?", "Menu Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, billeteraAMover, billeteraAMover[0]);
+                        int billeteraDeRetiro = JOptionPane.showOptionDialog(ventana, "¿Va A Realizar El Movimiento En Efectivo O Nequi?", "Menú Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, billeteraAMover, billeteraAMover[0]);
                         try{
                         if(billeteraDeRetiro == 1){
                             dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Retirar."));
@@ -66,17 +78,17 @@ public class App {
                         }
                         dineroDigital -= dineroARetirar;
                         }}catch(Exception e){
-                            JOptionPane.showMessageDialog(null, "Pusó valores incorrectos.");
+                            JOptionPane.showMessageDialog(ventana, "Pusó valores incorrectos.");
                             restarDinero();
                         }
     }
 
-    public static void menuCuentas(){//Función para el menu de cuenta
-        String[] botonesDinero = {"Ver total", "Restar Dinero A La Cuenta", "Sumar Dinero A La Cuenta", "Retroceder Al Menu Principal", "Salir"};
-        int opcionMenuCuentas = JOptionPane.showOptionDialog(null, "¿Que desea hacer?", "Menu Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesDinero, botonesDinero[0]);
+    public void menuCuentas(){//Función para el menu de cuenta
+        String[] botonesDinero = {"Ver total", "Restar Dinero A La Cuenta", "Sumar Dinero A La Cuenta", "Retroceder Al Menú Principal", "Salir"};
+        int opcionMenuCuentas = JOptionPane.showOptionDialog(ventana, "¿Que desea hacer?", "Menú Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesDinero, botonesDinero[0]);
         switch (opcionMenuCuentas) {
             case 0:
-                JOptionPane.showMessageDialog(null, "Su Dinero Total Es: " + (dinero + dineroDigital) + "$\nDinero en efectivo: " + dinero + "$" + "\nDinero en Nequi: " + dineroDigital + "$");
+                JOptionPane.showMessageDialog(ventana, "Su Dinero Total Es: " + (dinero + dineroDigital) + "$\nDinero en efectivo: " + dinero + "$" + "\nDinero en Nequi: " + dineroDigital + "$");
                 menuCuentas();
                 break;
             case 1:
@@ -95,13 +107,13 @@ public class App {
         }
 
     }
-    public static void inventario(){//funcion menu inventario
-        String[] botonesMenuInventario = {"Ver Productos Agregados", "Modificar Inventario", "Agregar Stock", "Menu Principal", "Salir"};
-        int opcionMenuInventario = JOptionPane.showOptionDialog(null, "Productos E Inventario", "Menu Inventario", 
+    public void inventario(){//funcion menu inventario
+        String[] botonesMenuInventario = {"Ver Productos Agregados", "Modificar Inventario", "Agregar Stock", "Menú Principal", "Salir"};
+        int opcionMenuInventario = JOptionPane.showOptionDialog(ventana, "Productos E Inventario", "Menu Inventario", 
         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMenuInventario, botonesMenuInventario[0]);
         switch (opcionMenuInventario) {
             case 0:
-                if (i == 0){JOptionPane.showMessageDialog(null, "No Hay Productos Agregados Aun.");
+                if (i == 0){JOptionPane.showMessageDialog(ventana, "No Hay Productos Agregados Aun.");
                     inventario();}else{verProductos();}
                 break;
             case 1:
@@ -109,31 +121,31 @@ public class App {
                 inventario();
                 break;
             default:
-                JOptionPane.showMessageDialog(null, "Salió Del Programa");
+                JOptionPane.showMessageDialog(ventana, "Salió Del Programa");
                 break;
         }
     }
-    public static void verProductos(){//Función para ver los prouctos del inventario
+    public void verProductos(){//Función para ver los prouctos del inventario
         if(nombres[0].isEmpty()){
-            JOptionPane.showMessageDialog(null, "El Inventario Esta Vacio Aun...");
+            JOptionPane.showMessageDialog(ventana, "El Inventario Esta Vacio Aun...");
         }
         String mensaje = "Nombre \t  Precio \t  Stock \t  Codigo\n";
         for(i = 0; i < nombres.length; i++){
             mensaje += nombres[i] + "\t  " + precios[i] + "\t  " + stocks[i] + "\t       " + codigos[i] + "\n"; 
         }
-        JOptionPane.showMessageDialog(null, mensaje);
+        JOptionPane.showMessageDialog(ventana, mensaje);
     }
-    public static void agregarProductos(){//Función para agregar productos en el inventario usando arrays
+    public void agregarProductos(){//Función para agregar productos en el inventario usando arrays
         nombres[i] = JOptionPane.showInputDialog("Escriba El Nombre Del Producto Número " + (i + 1));
         precios[i] = Double.parseDouble(JOptionPane.showInputDialog("Escriba El Precio De " + nombres[i]));
         stocks[i] = Integer.parseInt(JOptionPane.showInputDialog("Escriba El Stock Disponible De " + nombres[i]));
         codigos[i] = Integer.parseInt(JOptionPane.showInputDialog("Escriba EL COdigo De" + nombres[i]));
         i++;
     }
-    public static void registrarventa(){//Función para registrar las ventas
+    public void registrarventa(){//Función para registrar las ventas
         String buscarProducto = JOptionPane.showInputDialog("Escriba El Nombre Del Producto");
         if(nombres[0] == null){
-          JOptionPane.showMessageDialog(null, "No Hay " + buscarProducto + " Registrado En El Inventario");
+          JOptionPane.showMessageDialog(ventana, "No Hay " + buscarProducto + " Registrado En El Inventario");
           menu();
         }
         for(int i = 0; i < nombres.length; i++){
@@ -146,11 +158,13 @@ public class App {
             }
         }
     }
-    public static void menu(){//Función del menu principal
+    public void menu(){//Función del menu principal
         String[] botonesMenuPrincipal = {"Ver Dinero", "Productos E Inventario", "Registrar venta","Salir"};
-        int opcionMenuPrincipal = JOptionPane.showOptionDialog(null, "¿Que quiere hacer hoy?", "Menu principal", 
+        int opcionMenuPrincipal = JOptionPane.showOptionDialog(ventana, "¿Qué Quiere Hacer Hoy?", "Menú Principal", 
             JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMenuPrincipal, botonesMenuPrincipal[0]);
             switch (opcionMenuPrincipal){
+                case -1:
+                    System.exit(0);
                 case 0:
                     menuCuentas();
                     break;
@@ -164,21 +178,13 @@ public class App {
                     System.exit(0);
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "La Opción Elegida Es Incorrecta....");
+                    JOptionPane.showMessageDialog(ventana, "La Opción Elegida Es Incorrecta....");
                     menu();
                     break;
             }
-
         }
     public static void main(String[] args) throws Exception{
-        JFrame ventana = new JFrame("SublimAK");
-
-        ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);//PARA PANTALLA COMPLETA AJUSTADA A MONITOR
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setVisible(true);
-        
-        ventana.getContentPane().setBackground(Color.DARK_GRAY);//PARA PONER EL FRAME EN MODO OSCURO(SOLO APLICA PARA LA VENTANA)
-
-        menu();
+        App app = new App();
+        app.menu();
     }
 }
