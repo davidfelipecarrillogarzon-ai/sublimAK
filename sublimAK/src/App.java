@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class App extends JFrame{
+
     JFrame ventana;
 
     public App(){
@@ -9,10 +10,10 @@ public class App extends JFrame{
     ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);//PARA PANTALLA COMPLETA AJUSTADA A MONITOR
     ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
     ventana.setVisible(true);
-    ventana.getContentPane().setBackground(Color.DARK_GRAY);
-    java.net.URL url = getClass().getResource("iconoSK.png");
-    setIconImage(new ImageIcon(url).getImage());//ICONO
-    }//PARA PONER EL FRAME EN MODO OSCURO(SOLO APLICA PARA LA VENTANA)
+    ventana.getContentPane().setBackground(Color.DARK_GRAY);//PARA PONER EL FRAME EN MODO OSCURO(SOLO APLICA PARA LA VENTANA)//PARA PONER EL FRAME EN MODO OSCURO(SOLO APLICA PARA LA VENTANA)
+    java.net.URL url = getClass().getResource("iconoSK.png");;//ICONO
+    setVisible(true);
+}
     
     static int i = 0;
 
@@ -20,7 +21,6 @@ public class App extends JFrame{
     static float dinero = 0;
     static float dineroDigital= 0;
     static float dineroARetirar = 0;
-    static int billeteraDeRetiro;
 
     //Variables de inventario
     static String[] nombres = new String[100];
@@ -28,59 +28,85 @@ public class App extends JFrame{
     static int [] stocks = new int[100];
     static int[] codigos = new int[100];
 
-    public void sumarDinero(){
-        //Suma de Dinero
+    public void sumarDinero(){//Suma de Dinero
+                        int billeteraDeRetiro = 0;
                         float dineroASumar = 0;
                         String[] billeteraAMover= {"Efectivo", "Nequi", "Volver"};
                         try{
-                        int billeteraDeRetiro = JOptionPane.showOptionDialog(ventana, "¿Va A Realizar El Movimiento En Efectivo O Nequi?", "Menú Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, billeteraAMover, billeteraAMover[0]);
+                        billeteraDeRetiro = JOptionPane.showOptionDialog(ventana, "¿Va A Realizar El Movimiento En Efectivo O Nequi?", "Menú Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, billeteraAMover, billeteraAMover[0]);
                         if(billeteraDeRetiro == 0){
                             dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Agregar"));
                         while (dineroASumar <1000) {
                             dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("El Monto Que Desea Añadir A La Cuenta Es Incorrecto No Puede Agregar Menos De 1000$"));
                         }
                         dinero += dineroASumar;
-                        JOptionPane.showMessageDialog(null, "El dinero en efectivo ahorrado es " + dinero + "$");
+                        JOptionPane.showMessageDialog(ventana, "El Dinero En Efectivo Ahorrado Es " + dinero + "$");
                         menuCuentas();
                         }else if(billeteraDeRetiro == 1){
                             dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Agregar(Dinero Digital)."));
                         while (dineroASumar <1000) {
-                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El Monto Que Desea Agregar Es Incorrecto No Puede Agregar Menos De 1000"));
+                            dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("El Monto Que Desea Agregar Es Incorrecto No Puede Agregar Menos De 1000"));
                         }
                         dineroDigital += dineroASumar;
+                        JOptionPane.showMessageDialog(ventana, "El Dinero En Nequi Ahorrado Es " + dineroDigital + "$");
+                        menuCuentas();
                         }else if(billeteraDeRetiro == -1){
-                            JOptionPane.showMessageDialog(ventana, "Salió Del Programa");
-                            System.exit(0);
+                            menu();
                         }else{
                             menuCuentas();
                         }
-                        }catch(Exception e){
-                            JOptionPane.showMessageDialog(ventana, "Pusó Valores Incorrectos.");
-                            sumarDinero();
-                        }
+                    }catch(IllegalArgumentException e){
+                        JOptionPane.showMessageDialog(ventana, "Pusó valores incorrectos.(Solo números)");
+                        restarDinero();
+                    }catch(NullPointerException e){
+                        JOptionPane.showMessageDialog(ventana, "Canceló la operación");
+                        menuCuentas();
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(ventana, "ERROR Desconocido");
+                        System.out.println("Error en funcion sumarDinero(); dinero: " + e);
+                        restarDinero();
+                    }
                         
     }
-    public void restarDinero(){
-        //Resta de dinero
-                        String[] billeteraAMover= {"Efectivo", "Nequi"};
-                        int billeteraDeRetiro = JOptionPane.showOptionDialog(ventana, "¿Va A Realizar El Movimiento En Efectivo O Nequi?", "Menú Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, billeteraAMover, billeteraAMover[0]);
+    public void restarDinero(){//Resta de dinero
+                        int billeteraDeRetiro = 0;
+                        String[] billeteraAMover= {"Efectivo", "Nequi", "Volver"};
+                        billeteraDeRetiro = JOptionPane.showOptionDialog(ventana, "¿Va A Realizar El Movimiento En Efectivo O Nequi?", "Menú Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, billeteraAMover, billeteraAMover[0]);
                         try{
-                        if(billeteraDeRetiro == 1){
-                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Retirar."));
-                        while (dineroARetirar <1000 || dineroARetirar > dinero) {
-                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El Monto Que Desea Retirar Es Incorrecto No Puede Retirar Menos De 1000 Ni Más De " + dinero + "$"));
+                        if(billeteraDeRetiro == 0){
+                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Retirar"));
+                        while (dineroARetirar <1000) {
+                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("No Puede Retirar Menos De 1000$"));
+                        }while (dineroARetirar > dinero) {
+                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El Monto De Dinero que Piensa Retirar Es Mayor Al Dinero Disponible En Su Cuenta\nDinero Disponible En Su Cuenta: " + dinero + "$"));
                         }
                         dinero -= dineroARetirar;
-                        }else{
+                        menuCuentas();
+                        }else if (billeteraDeRetiro == 1){
                             dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Retirar (Dinero Digital)."));
-                        while (dineroARetirar <1000 || dineroARetirar > dinero) {
+                        while (dineroARetirar <1000) {
                             dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El monto que desea retirar es incorrecto no puede retirar menos de 1000 ni mas de " + dinero + "$"));
+                        }while (dineroARetirar > dineroDigital) {
+                            dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El Monto De Dinero que Piensa Retirar Es Mayor Al Dinero Disponible En Su Cuenta\nDinero Disponible En Su Cuenta Nequi es: " + dineroDigital + "$"));
                         }
                         dineroDigital -= dineroARetirar;
-                        }}catch(Exception e){
-                            JOptionPane.showMessageDialog(ventana, "Pusó valores incorrectos.");
-                            restarDinero();
+                        menuCuentas();
+                        }else if(billeteraDeRetiro == -1){
+                            menu();
+                        }else if(billeteraDeRetiro == 2){
+                            menuCuentas();
                         }
+                    }catch(IllegalArgumentException e){
+                        JOptionPane.showMessageDialog(ventana, "Pusó valores incorrectos.(Solo números)");
+                        restarDinero();
+                    }catch(NullPointerException e){
+                        JOptionPane.showMessageDialog(ventana, "Canceló la operación");
+                        menuCuentas();
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(ventana, "ERROR Desconocido");
+                        System.out.println("Error en funcion restarDinero(); dinero: " + e);
+                        restarDinero();
+                    }
     }
 
     public void menuCuentas(){//Función para el menu de cuenta
