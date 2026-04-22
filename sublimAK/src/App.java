@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class App extends JFrame{
 
@@ -14,7 +17,10 @@ public class App extends JFrame{
     java.net.URL url = getClass().getResource("iconoSK.png");;//ICONO
     setVisible(true);
 }
-    
+
+    ArrayList<Movimiento> historial = new ArrayList<>();
+    int contadorMovimientos = 1;
+
     static int i = 0;
 
     //Variables de cuenta
@@ -28,6 +34,41 @@ public class App extends JFrame{
     static int [] stocks = new int[100];
     static int[] codigos = new int[100];
 
+    class Movimiento{
+        int id;
+        String tipo;
+        float monto;
+        String fecha;
+
+        public Movimiento(int id, String tipo, float monto){
+            this.id = id;
+            this.tipo = tipo;
+            this.monto = monto;
+
+            DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            this.fecha = LocalDateTime.now().format(formatoFecha);
+        }
+
+        //Lo siguiente es un CONSTRUCTOR no una funcion
+        public String toString(){
+            return "ID: " + id + " | " + tipo + " | $" + monto + " | " + fecha;
+        }
+    }
+
+    public void mostrarHistorial(){
+        if(contadorMovimientos == 1){
+        JOptionPane.showMessageDialog(ventana, "No Hay Movimientos Registrados");
+        menuCuentas();
+        };
+        String texto = "";
+        for(Movimiento m : historial){
+
+            texto += m.toString() + "\n";
+        }
+            JOptionPane.showMessageDialog(ventana, texto);
+            menuCuentas();
+    }
+
     public void sumarDinero(){//Suma de Dinero
                         int billeteraDeRetiro = 0;
                         float dineroASumar = 0;
@@ -40,6 +81,7 @@ public class App extends JFrame{
                             dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("El Monto Que Desea Añadir A La Cuenta Es Incorrecto No Puede Agregar Menos De 1000$"));
                         }
                         dinero += dineroASumar;
+                        historial.add(new Movimiento(contadorMovimientos++, "Deposito Efectivo", dineroASumar));
                         JOptionPane.showMessageDialog(ventana, "El Dinero En Efectivo Ahorrado Es " + dinero + "$");
                         menuCuentas();
                         }else if(billeteraDeRetiro == 1){
@@ -48,6 +90,9 @@ public class App extends JFrame{
                             dineroASumar = Float.parseFloat(JOptionPane.showInputDialog("El Monto Que Desea Agregar Es Incorrecto No Puede Agregar Menos De 1000"));
                         }
                         dineroDigital += dineroASumar;
+
+                        //Guardar movimiento 
+                        historial.add(new Movimiento(contadorMovimientos++, "Deposito Nequi", dineroASumar));
                         JOptionPane.showMessageDialog(ventana, "El Dinero En Nequi Ahorrado Es " + dineroDigital + "$");
                         menuCuentas();
                         }else if(billeteraDeRetiro == -1){
@@ -55,16 +100,16 @@ public class App extends JFrame{
                         }else{
                             menuCuentas();
                         }
-                    }catch(IllegalArgumentException e){
+                    }catch(NumberFormatException e){
                         JOptionPane.showMessageDialog(ventana, "Pusó valores incorrectos.(Solo números)");
-                        restarDinero();
+                        sumarDinero();
                     }catch(NullPointerException e){
                         JOptionPane.showMessageDialog(ventana, "Canceló la operación");
                         menuCuentas();
                     }catch(Exception e){
                         JOptionPane.showMessageDialog(ventana, "ERROR Desconocido");
                         System.out.println("Error en funcion sumarDinero(); dinero: " + e);
-                        restarDinero();
+                        sumarDinero();
                     }
                         
     }
@@ -81,6 +126,7 @@ public class App extends JFrame{
                             dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El Monto De Dinero que Piensa Retirar Es Mayor Al Dinero Disponible En Su Cuenta\nDinero Disponible En Su Cuenta: " + dinero + "$"));
                         }
                         dinero -= dineroARetirar;
+                        historial.add(new Movimiento(contadorMovimientos++, "Retiro Efectivo", dineroARetirar));
                         menuCuentas();
                         }else if (billeteraDeRetiro == 1){
                             dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("Escriba El Dinero Que Va A Retirar (Dinero Digital)."));
@@ -90,13 +136,14 @@ public class App extends JFrame{
                             dineroARetirar = Float.parseFloat(JOptionPane.showInputDialog("El Monto De Dinero que Piensa Retirar Es Mayor Al Dinero Disponible En Su Cuenta\nDinero Disponible En Su Cuenta Nequi es: " + dineroDigital + "$"));
                         }
                         dineroDigital -= dineroARetirar;
+                        historial.add(new Movimiento(contadorMovimientos++, "Retiro Nequi", dineroARetirar));
                         menuCuentas();
                         }else if(billeteraDeRetiro == -1){
                             menu();
                         }else if(billeteraDeRetiro == 2){
                             menuCuentas();
                         }
-                    }catch(IllegalArgumentException e){
+                    }catch(NumberFormatException e){
                         JOptionPane.showMessageDialog(ventana, "Pusó valores incorrectos.(Solo números)");
                         restarDinero();
                     }catch(NullPointerException e){
@@ -108,9 +155,8 @@ public class App extends JFrame{
                         restarDinero();
                     }
     }
-
     public void menuCuentas(){//Función para el menu de cuenta
-        String[] botonesDinero = {"Ver total", "Restar Dinero A La Cuenta", "Sumar Dinero A La Cuenta", "Retroceder Al Menú Principal", "Salir"};
+        String[] botonesDinero = {"Ver total", "Restar Dinero A La Cuenta", "Sumar Dinero A La Cuenta", "Ver Movimientos", "Retroceder Al Menú Principal", "Salir"};
         int opcionMenuCuentas = JOptionPane.showOptionDialog(ventana, "¿Que desea hacer?", "Menú Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesDinero, botonesDinero[0]);
         switch (opcionMenuCuentas) {
             case 0:
@@ -124,9 +170,12 @@ public class App extends JFrame{
                 sumarDinero();
                 break;
             case 3:
-                menu();
+                mostrarHistorial();
                 break;
             case 4:
+                menu();
+                break;
+            case 5:
                 System.exit(0);
             default:
                 break;
