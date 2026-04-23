@@ -11,11 +11,8 @@ public class App extends JFrame{
     public App(){
     ventana = new JFrame("SublimAK");
     ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);//PARA PANTALLA COMPLETA AJUSTADA A MONITOR
-    ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
-    ventana.setVisible(true);
+    ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       
     ventana.getContentPane().setBackground(Color.DARK_GRAY);//PARA PONER EL FRAME EN MODO OSCURO(SOLO APLICA PARA LA VENTANA)//PARA PONER EL FRAME EN MODO OSCURO(SOLO APLICA PARA LA VENTANA)
-    java.net.URL url = getClass().getResource("iconoSK.png");;//ICONO
-    setVisible(true);
 }
 
     ArrayList<Movimiento> historial = new ArrayList<>();
