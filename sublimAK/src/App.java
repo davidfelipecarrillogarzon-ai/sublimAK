@@ -18,18 +18,24 @@ public class App extends JFrame{
     ArrayList<Movimiento> historial = new ArrayList<>();
     int contadorMovimientos = 1;
 
-    static int i = 0;
+    static int u = 0;
 
     //Variables de cuenta
     static float dinero = 0;
     static float dineroDigital= 0;
     static float dineroARetirar = 0;
 
-    //Variables de inventario
+    //Variables de inventario para verificacion - nombres
     static String[] nombres = new String[100];
-    static double [] precios = new double [100];
-    static int [] stocks = new int[100];
+    static String[] preciosstr = new String[100];
+    static String[] stocksstr = new String[100];
+    static String[] codigosstr = new String[100];
+
+    //Variables despues de verificacion de null y espacios vacios
+    static double[] precios = new double[100];
+    static int[] stocks = new int[100];
     static int[] codigos = new int[100];
+
 
     class Movimiento{
         int id;
@@ -183,39 +189,121 @@ public class App extends JFrame{
 
     }
     public void inventario(){//funcion menu inventario
-        String[] botonesMenuInventario = {"Ver Productos Agregados", "Modificar Inventario", "Agregar Stock", "Menú Principal", "Salir"};
+        String[] botonesMenuInventario = {"Ver Inventario", "Agregar Producto", "Agregar Stock", "Menú Principal", "Salir"};
         int opcionMenuInventario = JOptionPane.showOptionDialog(ventana, "Productos E Inventario", "Menu Inventario", 
         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMenuInventario, botonesMenuInventario[0]);
-        switch (opcionMenuInventario) {
+        try {
+            
+            switch (opcionMenuInventario) {
+            case -1:
+                menu();
+                break;
             case 0:
-                if (i == 0){JOptionPane.showMessageDialog(ventana, "No Hay Productos Agregados Aun.");
-                    inventario();}else{verProductos();}
+                if(u == 0){JOptionPane.showMessageDialog(ventana, "Sin Productos Registrados Aún"); inventario();}else{verProductos();}
                 break;
             case 1:
                 agregarProductos();
                 inventario();
                 break;
+            case 2:
+                System.out.print("Aqui va agregar stock");
+                break;
+            case 3:
+                menu();
+                break;
+            case 4:
+                System.exit(0);
             default:
-                JOptionPane.showMessageDialog(ventana, "Salió Del Programa");
+                JOptionPane.showMessageDialog(ventana, "Opción no disponible");
                 break;
         }
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+
     }
     public void verProductos(){//Función para ver los prouctos del inventario
-        if(nombres[0].isEmpty()){
-            JOptionPane.showMessageDialog(ventana, "El Inventario Esta Vacio Aun...");
-        }
         String mensaje = "Nombre \t  Precio \t  Stock \t  Codigo\n";
-        for(i = 0; i < nombres.length; i++){
+        for(int i = 0; i < nombres.length; i++){
             mensaje += nombres[i] + "\t  " + precios[i] + "\t  " + stocks[i] + "\t       " + codigos[i] + "\n"; 
         }
         JOptionPane.showMessageDialog(ventana, mensaje);
     }
     public void agregarProductos(){//Función para agregar productos en el inventario usando arrays
-        nombres[i] = JOptionPane.showInputDialog("Escriba El Nombre Del Producto Número " + (i + 1));
-        precios[i] = Double.parseDouble(JOptionPane.showInputDialog("Escriba El Precio De " + nombres[i]));
-        stocks[i] = Integer.parseInt(JOptionPane.showInputDialog("Escriba El Stock Disponible De " + nombres[i]));
-        codigos[i] = Integer.parseInt(JOptionPane.showInputDialog("Escriba EL COdigo De" + nombres[i]));
-        i++;
+        while (true) {
+            nombres[u] = JOptionPane.showInputDialog("Escriba El Nombre Del Producto Número " + (u + 1));
+
+            if(nombres[u] == null){
+                JOptionPane.showMessageDialog(ventana, "Cancelaste agregar el producto " + (u + 1));
+                return;
+            }//Aquí es para si el usuario da cancelar la variable no quede con el String "null"
+            if(nombres[u].trim().isEmpty()){JOptionPane.showMessageDialog(ventana, "No Puede Dejar El Nombre Vacío"); continue;}//Para cuando el usuario deje el nombre vacio
+
+            break;
+        }
+
+        while (true) {
+            preciosstr[u] = JOptionPane.showInputDialog("Escriba El Precio De " + nombres[u]);
+            if(preciosstr[u] == null){JOptionPane.showMessageDialog(ventana, "Canceló Agregar Precio Al Producto " + nombres[u]);return;}
+            if(preciosstr[u].trim().isEmpty()){
+                JOptionPane.showMessageDialog(ventana, "No Puede Dejar El Precio Vacío");
+                continue;
+            }
+            try{
+            precios [u] = Double.parseDouble(preciosstr[u]);
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(ventana, "Ingrese Solo Números");
+            continue;//Hace que se repita el bucle while(true){....}
+        }
+            if(precios[u] <= 100){
+                JOptionPane.showMessageDialog(ventana, "El Producto No Puede Valer Menos De 100$");
+                continue;
+            }
+            break;
+
+        }
+        while (true) {
+            stocksstr[u] = JOptionPane.showInputDialog("Escriba El Stock De " + nombres[u]);
+            if(stocksstr[u] == null){JOptionPane.showMessageDialog(ventana, "Canceló Agregar Stock Al Producto " + nombres[u]);return;}
+            if(stocksstr[u].trim().isEmpty()){
+                JOptionPane.showMessageDialog(ventana, "No Puede Dejar El Stock Vacío");
+                continue;
+            }
+            try{
+            stocks [u] = Integer.parseInt(stocksstr[u]);
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(ventana, "Ingrese Solo Números");
+            continue;//Hace que se repita el bucle while(true){....}
+        }
+            if(stocks[u] <= 0){
+                JOptionPane.showMessageDialog(ventana, "No Puede Poner Stock Menor Ni igual A Cero");
+                continue;
+            }
+            break;
+
+        }
+        while (true) {
+            codigosstr[u] = JOptionPane.showInputDialog("Escriba El Codigo De " + nombres[u] + "\nEsto Le Servira Para Encontrar Productos De Una Manera Más Eficiente Y Registrar Ventas Por Medio De Codigos");
+            if(codigosstr[u] == null){JOptionPane.showMessageDialog(ventana, "Canceló Agregar Codigo Al Producto " + nombres[u]);return;}
+            while(codigosstr[u].trim().isEmpty()){
+                JOptionPane.showMessageDialog(ventana, "No Puede Dejar El Stock Vacío");
+                continue;
+            }
+            if(codigosstr[u].length() <= 3){
+                JOptionPane.showMessageDialog(ventana, "El Codigo Debe Tener Mas De Tres Digitos");
+                continue;
+            }
+
+            try{
+            codigos [u] = Integer.parseInt(codigosstr[u]);
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(ventana, "Ingrese Solo Números");
+            continue;//Hace que se repita el bucle while(true){....}
+        }
+        break;
+
+        }
+        u++;
     }
     public void registrarventa(){//Función para registrar las ventas
         String buscarProducto = JOptionPane.showInputDialog("Escriba El Nombre Del Producto");
