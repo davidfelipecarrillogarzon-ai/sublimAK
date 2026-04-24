@@ -156,6 +156,9 @@ public class App extends JFrame{
         String[] botonesDinero = {"Ver total", "Restar Dinero A La Cuenta", "Sumar Dinero A La Cuenta", "Ver Movimientos", "Retroceder Al Menú Principal", "Salir"};
         int opcionMenuCuentas = JOptionPane.showOptionDialog(ventana, "¿Que desea hacer?", "Menú Dinero", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesDinero, botonesDinero[0]);
         switch (opcionMenuCuentas) {
+            case -1:
+                menu();
+                break;
             case 0:
                 JOptionPane.showMessageDialog(ventana, "Su Dinero Total Es: " + (dinero + dineroDigital) + "$\nDinero en efectivo: " + dinero + "$" + "\nDinero en Nequi: " + dineroDigital + "$");
                 menuCuentas();
