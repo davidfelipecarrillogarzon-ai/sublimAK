@@ -13,6 +13,7 @@ public class App extends JFrame{
     ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);//PARA PANTALLA COMPLETA AJUSTADA A MONITOR
     ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       
     ventana.getContentPane().setBackground(Color.DARK_GRAY);//PARA PONER EL FRAME EN MODO OSCURO(SOLO APLICA PARA LA VENTANA)//PARA PONER EL FRAME EN MODO OSCURO(SOLO APLICA PARA LA VENTANA)
+    ventana.setVisible(true);
 }
 
     ArrayList<Movimiento> historial = new ArrayList<>();
