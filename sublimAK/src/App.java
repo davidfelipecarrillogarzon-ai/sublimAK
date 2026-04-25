@@ -6,8 +6,13 @@ public class App extends JFrame{
     Inventario inventario;
 
     public App(){
-    cuenta = new CuentaEmpresa(this);//
+    cuenta = new CuentaEmpresa(this);
     inventario = new Inventario(this);
+
+    // ← cargar datos guardados
+    Datos.cargarCuenta(cuenta);
+    Datos.cargarHistorial(cuenta);
+    Datos.cargarInventario(inventario);
 
     this.setTitle("SublimAK");
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);//PARA PANTALLA COMPLETA AJUSTADA A MONITOR

@@ -92,14 +92,17 @@ public class CuentaEmpresa {
                 dinero += dineroASumar;
                 historial.add(new Movimiento(contadorMovimientos++, "Deposito Efectivo", dineroASumar));
                 JOptionPane.showMessageDialog(this.app, "Dinero En Efectivo: " + dinero);
+                Datos.guardarCuenta(this);
+                Datos.guardarHistorial(this);
             }
 
             if(opcion == 1){
                 dineroDigital += dineroASumar;
                 historial.add(new Movimiento(contadorMovimientos++, "Deposito Nequi", dineroASumar));
                 JOptionPane.showMessageDialog(this.app, "Dinero En Nequi: " + dineroDigital);
+                Datos.guardarCuenta(this);
+                Datos.guardarHistorial(this);
             }
-
             return; //
 
         }catch(NumberFormatException e){
@@ -152,6 +155,8 @@ public void restarDinero(){
                 dinero -= dineroARetirar;
                 historial.add(new Movimiento(contadorMovimientos++, "Retiro Efectivo", dineroARetirar));
                 JOptionPane.showMessageDialog(this.app, "Dinero Restante: " + dinero);
+                Datos.guardarCuenta(this);
+                Datos.guardarHistorial(this);
             }
 
             if(opcion == 1){ // nequi
@@ -163,6 +168,8 @@ public void restarDinero(){
                 dineroDigital -= dineroARetirar;
                 historial.add(new Movimiento(contadorMovimientos++, "Retiro Nequi", dineroARetirar));
                 JOptionPane.showMessageDialog(this.app, "Dinero Restante En Nequi: " + dineroDigital);
+                Datos.guardarCuenta(this);
+                Datos.guardarHistorial(this);
             }
 
             return; //termina correctamente

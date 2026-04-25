@@ -103,6 +103,7 @@ public class Inventario {
 
         }
         u++;
+        Datos.guardarInventario(this);
     }
 public void buscarProductoXNombre() {
     int stockAnterior = 0;
@@ -152,6 +153,7 @@ public void buscarProductoXNombre() {
 
         }
         stocks[iterador] += stockAnterior;
+        Datos.guardarInventario(this);
     }
 public void buscarProductoXCodigo() {
     int productoBuscado = 0;
@@ -218,6 +220,7 @@ public void buscarProductoXCodigo() {
 
         }
         stocks[iterador] += stockAnterior;
+        Datos.guardarInventario(this); 
     }
     public void agregarStock(){
         String [] botonesAgregarStock = {"Buscar Producto Por Nombre", "Buscar Producto Por Codigo", "Volver"};
@@ -284,6 +287,9 @@ public void buscarProductoXCodigo() {
                         "Venta Registrada\nProducto: " + nombres[i] +
                         "\nCantidad: " + cantidadVendida +
                         "\nTotal: $" + totalVenta);
+                    Datos.guardarInventario(this);        
+                    Datos.guardarCuenta(app.cuenta);     
+                    Datos.guardarHistorial(app.cuenta); 
                     return;
 
                 } catch (NumberFormatException e) {

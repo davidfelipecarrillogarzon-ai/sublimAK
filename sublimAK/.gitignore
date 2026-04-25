@@ -1,0 +1,5 @@
+bin/
+*.class
+datos/
+.vscode/
+Thumbs.db
