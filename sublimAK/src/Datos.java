@@ -2,13 +2,14 @@ import java.io.*;
 
 public class Datos {
 
-    static final String RUTA_INVENTARIO = "datos/inventario.txt";
-    static final String RUTA_CUENTA = "datos/cuenta.txt";
-    static final String RUTA_HISTORIAL = "datos/historial.txt";
+static final String CARPETA = System.getProperty("user.home") + "/SublimAK/datos/";
+static final String RUTA_INVENTARIO = CARPETA + "inventario.txt";
+static final String RUTA_CUENTA = CARPETA + "cuenta.txt";
+static final String RUTA_HISTORIAL = CARPETA + "historial.txt";
 
     public static void guardarInventario(Inventario inv) {
         try {
-            new File("datos").mkdirs(); // crea la carpeta si no existe
+            new File(CARPETA).mkdirs();
             PrintWriter pw = new PrintWriter(new FileWriter(RUTA_INVENTARIO));
             for (int i = 0; i < inv.u; i++) {
                 pw.println(inv.nombres[i] + ";" + inv.precios[i] + ";" + inv.stocks[i] + ";" + inv.codigos[i]);
@@ -21,7 +22,7 @@ public class Datos {
 
     public static void guardarCuenta(CuentaEmpresa cuenta) {
         try {
-            new File("datos").mkdirs();
+            new File(CARPETA).mkdirs();
             PrintWriter pw = new PrintWriter(new FileWriter(RUTA_CUENTA));
             pw.println(cuenta.dinero + ";" + cuenta.dineroDigital);
             pw.close();
@@ -32,7 +33,7 @@ public class Datos {
 
     public static void guardarHistorial(CuentaEmpresa cuenta) {
         try {
-            new File("datos").mkdirs();
+            new File(CARPETA).mkdirs();
             PrintWriter pw = new PrintWriter(new FileWriter(RUTA_HISTORIAL));
             for (CuentaEmpresa.Movimiento m : cuenta.historial) {
                 pw.println(m.id + "|" + m.tipo + "|" + m.monto + "|" + m.fecha);
