@@ -4,10 +4,12 @@ import java.awt.*;
 public class App extends JFrame{
     CuentaEmpresa cuenta;
     Inventario inventario;
+    RegistrarVentas registro;
 
     public App(){
     cuenta = new CuentaEmpresa(this);
     inventario = new Inventario(this);
+    registro = new RegistrarVentas(this);
 
     // ← cargar datos guardados
     Datos.cargarCuenta(cuenta);
@@ -22,7 +24,7 @@ public class App extends JFrame{
     }
     public void menu(){//Función del menu principal
            while(true){
-            String[] botonesMenuPrincipal = {"Ver Dinero", "Productos E Inventario", "Registrar venta","Salir"};
+            String[] botonesMenuPrincipal = {"Ver Dinero", "Productos E Inventario", "Registrar venta", "Salir", "Versión"};
         int opcionMenuPrincipal = JOptionPane.showOptionDialog(this, "¿Qué Quiere Hacer Hoy?", "Menú Principal", 
             JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMenuPrincipal, botonesMenuPrincipal[0]);
             switch (opcionMenuPrincipal){
@@ -35,11 +37,14 @@ public class App extends JFrame{
                     inventario.inventario();
                     break;
                 case 2:
-                    inventario.registrarventa();
+                    registro.registrarventa();
                     break;
                 case 3:
                     System.exit(0);
                     break;
+                case 4:
+                    JOptionPane.showMessageDialog(this, "La version De Este Programa Es La 1.0.1");
+                    continue;
                 default:
                     JOptionPane.showMessageDialog(this, "La Opción Elegida Es Incorrecta....");
                     break;

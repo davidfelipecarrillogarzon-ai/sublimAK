@@ -11,6 +11,8 @@ public class Inventario {
         
     }
     int u = 0;//IMPORTANTE...Es el número de productos que hay
+
+    
     //Variables de inventario para verificacion - nombres
     String[] nombres = new String[100];
     String[] preciosstr = new String[100];
@@ -241,66 +243,7 @@ public void buscarProductoXCodigo() {
                 break;
         }
     }
-    public void registrarventa() {
-    String buscarProducto = JOptionPane.showInputDialog("Escriba El Nombre Del Producto");
-
-    if (buscarProducto == null) return; // usuario canceló
-
-    if (u == 0) {
-        JOptionPane.showMessageDialog(ventana, "No Hay Productos Registrados En El Inventario");
-        return;
-    }
-
-    for (int i = 0; i < u; i++) {
-        if (nombres[i] != null && nombres[i].equals(buscarProducto)) {
-
-            while (true) {
-                try {
-                    String input = JOptionPane.showInputDialog("Escriba La Cantidad De " + nombres[i] + " Vendida");
-                    if (input == null) return; // canceló
-
-                    int cantidadVendida = Integer.parseInt(input);
-
-                    if (cantidadVendida <= 0) {
-                        JOptionPane.showMessageDialog(ventana, "La Cantidad Debe Ser Mayor A Cero");
-                        continue;
-                    }
-
-                    if (cantidadVendida > stocks[i]) {
-                        JOptionPane.showMessageDialog(ventana, "Stock disponible: " + stocks[i] + ". No hay suficiente.");
-                        continue;
-                    }
-
-                    // Actualizar stock
-                    stocks[i] -= cantidadVendida;
-
-                    // Calcular total y sumar a la cuenta
-                    double totalVenta = precios[i] * cantidadVendida;
-                    app.cuenta.dinero += (float) totalVenta;
-                    app.cuenta.historial.add(new CuentaEmpresa.Movimiento(
-                        app.cuenta.contadorMovimientos++,
-                        "Venta - " + nombres[i],
-                        (float) totalVenta
-                    ));
-
-                    JOptionPane.showMessageDialog(ventana,
-                        "Venta Registrada\nProducto: " + nombres[i] +
-                        "\nCantidad: " + cantidadVendida +
-                        "\nTotal: $" + totalVenta);
-                    Datos.guardarInventario(this);        
-                    Datos.guardarCuenta(app.cuenta);     
-                    Datos.guardarHistorial(app.cuenta); 
-                    return;
-
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(ventana, "Ingrese Solo Números");
-                }
-            }
-        }
-    }
-
-    JOptionPane.showMessageDialog(ventana, "Producto No Encontrado En El Inventario");
-}
+    
 public void inventario(){//funcion menu inventario
         String[] botonesMenuInventario = {"Ver Inventario", "Agregar Producto", "Agregar Stock", "Menú Principal", "Salir"};
         int opcionMenuInventario = JOptionPane.showOptionDialog(ventana, "Productos E Inventario", "Menu Inventario", 
