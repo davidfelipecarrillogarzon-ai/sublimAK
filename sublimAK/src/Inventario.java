@@ -30,26 +30,24 @@ public class Inventario {
         }
         JOptionPane.showMessageDialog(ventana, mensaje);
     }
-    public void agregarProductos(){//Función para agregar productos en el inventario usando arrays
-        while (true) {
-            nombres[u] = JOptionPane.showInputDialog("Escriba El Nombre Del Producto Número " + (u + 1));
+    
 
-            if(nombres[u] == null){
+    public boolean verificadorEntradasDeDatos(String []variableAVerificar, String tipoInventario){
+        while (true) {
+            
+        variableAVerificar[u] = JOptionPane.showInputDialog("Escriba El " + tipoInventario + " Del Producto " + (u + 1));
+        if(variableAVerificar[u] == null){
                 JOptionPane.showMessageDialog(ventana, "Cancelaste agregar el producto " + (u + 1));
-                return;
-            }//Aquí es para si el usuario da cancelar la variable no quede con el String "null"
-            if(nombres[u].trim().isEmpty()){JOptionPane.showMessageDialog(ventana, "No Puede Dejar El Nombre Vacío"); continue;}//Para cuando el usuario deje el nombre vacio
-
-            break;
-        }
-
-        while (true) {
-            preciosstr[u] = JOptionPane.showInputDialog("Escriba El Precio De " + nombres[u]);
-            if(preciosstr[u] == null){JOptionPane.showMessageDialog(ventana, "Canceló Agregar Precio Al Producto " + nombres[u]);return;}
-            if(preciosstr[u].trim().isEmpty()){
-                JOptionPane.showMessageDialog(ventana, "No Puede Dejar El Precio Vacío");
+                return false;
+        }//Aquí es para si el usuario da cancelar la variable no quede con el String "null"
+        if(variableAVerificar[u].trim().isEmpty()){
+                JOptionPane.showMessageDialog(ventana, "No Puede Dejar El Campo Vacío"); 
                 continue;
-            }
+        }//Si el usuario deja el input vacío
+            if(tipoInventario.equals("Nombre")){
+         variableAVerificar [u] = variableAVerificar[u];  
+         break; 
+        }else if(tipoInventario.equals("Precio")){
             try{
             precios [u] = Double.parseDouble(preciosstr[u]);
         }catch(NumberFormatException e){
@@ -61,15 +59,8 @@ public class Inventario {
                 continue;
             }
             break;
-
-        }
-        while (true) {
-            stocksstr[u] = JOptionPane.showInputDialog("Escriba El Stock De " + nombres[u]);
-            if(stocksstr[u] == null){JOptionPane.showMessageDialog(ventana, "Canceló Agregar Stock Al Producto " + nombres[u]);return;}
-            if(stocksstr[u].trim().isEmpty()){
-                JOptionPane.showMessageDialog(ventana, "No Puede Dejar El Stock Vacío");
-                continue;
-            }
+        
+        }else if(tipoInventario.equals("Stock")){
             try{
             stocks [u] = Integer.parseInt(stocksstr[u]);
         }catch(NumberFormatException e){
@@ -81,16 +72,8 @@ public class Inventario {
                 continue;
             }
             break;
-
-        }
-        while (true) {
-            codigosstr[u] = JOptionPane.showInputDialog("Escriba El Codigo De " + nombres[u] + "\nEsto Le Servira Para Encontrar Productos De Una Manera Más Eficiente Y Registrar Ventas Por Medio De Codigos");
-            if(codigosstr[u] == null){JOptionPane.showMessageDialog(ventana, "Canceló Agregar Codigo Al Producto " + nombres[u]);return;}
-            if(codigosstr[u].trim().isEmpty()){
-                JOptionPane.showMessageDialog(ventana, "No Puede Dejar El Stock Vacío");
-                continue;
-            }
-            if(codigosstr[u].length() <= 3){
+        }else if(tipoInventario.equals("Codigo")){
+                        if(codigosstr[u].length() <= 3){
                 JOptionPane.showMessageDialog(ventana, "El Codigo Debe Tener Mas De Tres Digitos");
                 continue;
             }
@@ -102,8 +85,20 @@ public class Inventario {
             continue;//Hace que se repita el bucle while(true){....}
         }
         break;
-
+        }else{
+            System.out.println("Parametros de la función incorrectos");
         }
+    }
+    return true;
+
+
+
+}
+    public void agregarProductos(){//Función para agregar productos en el inventario usando arrays
+        if(!verificadorEntradasDeDatos(nombres, "Nombre")) return;
+        if(!verificadorEntradasDeDatos(preciosstr, "Precio")) return;
+        if(!verificadorEntradasDeDatos(stocksstr, "Stock"))return;
+        if(!verificadorEntradasDeDatos(codigosstr, "Codigo"))return;
         u++;
         Datos.guardarInventario(this);
     }
