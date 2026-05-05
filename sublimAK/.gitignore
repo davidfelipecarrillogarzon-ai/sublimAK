@@ -1,5 +1,25 @@
-bin/
+#Archivos compilados
 *.class
-datos/
+
+#Carpetas de compilación
+bin/
+out/
+target/
+
+#IDEs
+.idea/
 .vscode/
+*.iml
+
+#Sistema
 Thumbs.db
+.DS_Store
+
+#Datos
+datos/
+
+#Logs
+*.log
+
+
+

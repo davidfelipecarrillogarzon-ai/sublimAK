@@ -1,5 +1,7 @@
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import java.awt.Font;
 
 public class Inventario {
     App app;
@@ -23,13 +25,16 @@ public class Inventario {
     double[] precios = new double[100];
     int[] stocks = new int[100];
     int[] codigos = new int[100];
-    public void verProductos(){//Función para ver los prouctos del inventario
-        String mensaje = "Nombre \t  Precio \t  Stock \t  Codigo\n";
-        for(int i = 0; i < u; i++){
-            mensaje += nombres[i] + "\t  " + precios[i] + "\t  " + stocks[i] + "\t       " + codigos[i] + "\n"; 
-        }
-        JOptionPane.showMessageDialog(ventana, mensaje);
+public void verProductos() {
+    String mensaje = String.format("%-20s %-10s %-8s %-10s%n", "Nombre", "Precio", "Stock", "Codigo");
+    for (int i = 0; i < u; i++) {
+        mensaje += String.format("%-20s %-10.2f %-8d %-10d%n", nombres[i], precios[i], stocks[i], codigos[i]);
     }
+    JTextArea area = new JTextArea(mensaje);
+    area.setFont(new Font("Monospaced", Font.PLAIN, 14));
+    area.setEditable(false);
+    JOptionPane.showMessageDialog(ventana, area);
+}
     
 
     public boolean verificadorEntradasDeDatos(String []variableAVerificar, String tipoInventario){
@@ -109,7 +114,7 @@ public void buscarProductoXNombre() {
 
     String productoBuscado = JOptionPane.showInputDialog(ventana, "Escriba El Nombre Exacto Del Producto A Modificar Stock");
 
-    if (productoBuscado == null) return; // ✅ usuario canceló
+    if (productoBuscado == null) return;
     if (productoBuscado.trim().isEmpty()) {
         JOptionPane.showMessageDialog(ventana, "El Campo No Puede Estar Vacío");
         return;
@@ -162,7 +167,7 @@ public void buscarProductoXCodigo() {
     while (true) {
         productoBuscadostr = JOptionPane.showInputDialog("Escriba El Codigo Exacto Del Producto A Modificar Stock"); // ✅ dentro del bucle
 
-        if (productoBuscadostr == null) return; // ✅ cancela limpiamente
+        if (productoBuscadostr == null) return; //cancela limpiamente
 
         if (productoBuscadostr.trim().isEmpty()) {
             JOptionPane.showMessageDialog(ventana, "No Puede Dejar Este Campo Vacío");
@@ -174,7 +179,7 @@ public void buscarProductoXCodigo() {
         }
         try {
             productoBuscado = Integer.parseInt(productoBuscadostr);
-            break; // ✅ input válido, salir del bucle
+            break; //input válido, salir del bucle
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(ventana, "Ingrese Solo Números");
         }
