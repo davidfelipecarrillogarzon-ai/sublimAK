@@ -43,7 +43,7 @@ public class App extends JFrame{
                     System.exit(0);
                     break;
                 case 4:
-                    JOptionPane.showMessageDialog(this, "La version De Este Programa Es La 1.0.2\n\nNuevos Arreglos De Esta Versión:\n\n1. Se Mejora La Calidad Visual De La Tabla De Productos.\n\n2.Se Agrega Precio Temporal En El Registro De Ventas\n\n3.Se Optimiza El Funcionamiento Interno.");
+                    JOptionPane.showMessageDialog(this, "La version De Este Programa Es La 1.0.3\n\nNuevos Arreglos De Esta Versión:\n\n1. Se Añade Registro De Ventas Con Codigo.");
                     continue;
                 default:
                     JOptionPane.showMessageDialog(this, "La Opción Elegida Es Incorrecta....");
