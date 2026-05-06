@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 public class RegistrarVentas {
     App app;
     JFrame ventana;
+
     public RegistrarVentas(App app){
         this.app = app;
         this.ventana = app;
@@ -15,22 +16,59 @@ public class RegistrarVentas {
         }
     }
     return -1;
-}
+    }
+    public int buscarProductoXCodigo(int codigo){
+        for (int i = 0; i < app.inventario.u; i++){
+        if (app.inventario.codigos[i] == codigo) {
+            return i;
+        }
+    }
+    return -1;
+    }
 
     public void registrarventa() {
-        String nombreProducto = JOptionPane.showInputDialog("Escriba El Nombre Del Producto");
+        int encontrado = -1;
+        String [] codigoONombre = {"Registrar Por Nombre", "Registrar Por Codigo", "Cancelar"};
+        int eleccionNombreCodigo = JOptionPane.showOptionDialog(app, "¿Registrar Venta Con Nombre O Codigo?", "Menú De Registro De Ventas", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, codigoONombre, codigoONombre[0]);
+        if(eleccionNombreCodigo == -1)return;
+        if(eleccionNombreCodigo == 0){
+            String nombreProducto = JOptionPane.showInputDialog("Escriba El Nombre Del Producto");
             if (nombreProducto == null) return; // usuario canceló
 
              if (app.inventario.u == 0) {
             JOptionPane.showMessageDialog(ventana, "No Hay Productos Registrados En El Inventario");
             return;
             }
-            int encontrado = buscarProducto(nombreProducto);
+
+            encontrado = buscarProducto(nombreProducto);
         
             if (encontrado == -1) {
                 JOptionPane.showMessageDialog(ventana, "Producto No Encontrado En El Inventario");
                 return;
+            }}
+        
+        if(eleccionNombreCodigo == 1){
+            int codigoBusqueda = 0;
+            while (true) {
+            String codigoBusquedastr = JOptionPane.showInputDialog("Escriba El Codigo Del Producto");
+            if (codigoBusquedastr == null) return; // usuario canceló
+
+            if (app.inventario.u == 0) {
+            JOptionPane.showMessageDialog(ventana, "No Hay Productos Registrados En El Inventario");
+            return;
             }
+            try{
+                codigoBusqueda = Integer.parseInt(codigoBusquedastr);
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(app, "Use Solo Números Al Escribir El Codigo");
+                continue;
+            }
+            encontrado= buscarProductoXCodigo(codigoBusqueda);   
+            if(encontrado == -1){JOptionPane.showMessageDialog(app, "Producto No Encontrado En El Inventario");continue;}
+            break;
+            }
+        }
+        if(eleccionNombreCodigo == 2)return;
             while(true){//While importante para retornar a la funcion menu
                     int cantidadVendida = 0;
                     String cantidadVendidastr = JOptionPane.showInputDialog("Escriba La Cantidad De " + app.inventario.nombres[encontrado] + " Vendida");
@@ -50,6 +88,7 @@ public class RegistrarVentas {
                         JOptionPane.showMessageDialog(ventana, "Stock disponible: " + app.inventario.stocks[encontrado] + ". No hay suficiente.");
                         continue;
                     }
+                    
 
                     String[] botonesRegistrarPrecio = {"Usar Precio De Stock", "Usar Precio Diferente","Cancelar Registro"};
                     int eleccionPrecioVenta = JOptionPane.showOptionDialog(app, "Elija Una Opción", "Menú De Registro De Ventas", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesRegistrarPrecio, botonesRegistrarPrecio[0]);
@@ -65,6 +104,7 @@ public class RegistrarVentas {
                             return;
                         case 1:
                             double precioTemporal;
+                            while (true) {
                             String precioTemporalstr = JOptionPane.showInputDialog(app, "Escriba El Precio Temporal Para La Venta De " + app.inventario.nombres[encontrado]); 
                             if(precioTemporalstr == null){//El Usuario Canceló
                                return;
@@ -87,6 +127,7 @@ public class RegistrarVentas {
                             double totalVentaTemp = precioTemporal * cantidadVendida;
                             finalizarventa(encontrado, cantidadVendida, totalVentaTemp);
                             return;
+                        }
                         case 2:
                            return;
                     }
@@ -113,4 +154,3 @@ public class RegistrarVentas {
     
      
 }
-
