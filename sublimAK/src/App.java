@@ -6,17 +6,20 @@ public class App extends JFrame{
     Inventario inventario;
     RegistrarVentas registro;
     BuscadorProductos buscador;
+    Insumos insumos;
 
     public App(){
     cuenta = new CuentaEmpresa(this);
     inventario = new Inventario(this);
     registro = new RegistrarVentas(this);
     buscador = new BuscadorProductos(this);
+    insumos = new Insumos(this);
 
     // ← cargar datos guardados
     Datos.cargarCuenta(cuenta);
     Datos.cargarHistorial(cuenta);
     Datos.cargarInventario(inventario);
+    Datos.cargarInsumos();
 
     this.setTitle("SublimAK");
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);//PARA PANTALLA COMPLETA AJUSTADA A MONITOR
@@ -26,7 +29,7 @@ public class App extends JFrame{
     }
     public void menu(){//Función del menu principal
            while(true){
-            String[] botonesMenuPrincipal = {"Ver Dinero", "Productos E Inventario", "Registrar venta", "Salir", "Versión"};
+            String[] botonesMenuPrincipal = {"Ver Dinero", "Productos E Inventario", "Registrar venta", "Insumos","Salir", "Versión"};
         int opcionMenuPrincipal = JOptionPane.showOptionDialog(this, "¿Qué Quiere Hacer Hoy?", "Menú Principal", 
             JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMenuPrincipal, botonesMenuPrincipal[0]);
             switch (opcionMenuPrincipal){
@@ -42,14 +45,13 @@ public class App extends JFrame{
                     registro.registrarventa();
                     break;
                 case 3:
-                    System.exit(0);
+                    insumos.menuInsumos();
                     break;
                 case 4:
-                    JOptionPane.showMessageDialog(this, "La version De Este Programa Es La 1.0.3\n\nNuevos Arreglos De Esta Versión:\n\n1. Se Añade Registro De Ventas Con Codigo.\n\n2. Arreglos Internos");
+                    System.exit(0);
+                case 5:
+                    JOptionPane.showMessageDialog(this, "La version De Este Programa Es La 1.0.4\n\nNuevos Arreglos De Esta Versión:\n\n1. Se Añade Función De Control De Insumos.\n\n2. Arreglos Internos");
                     continue;
-                default:
-                    JOptionPane.showMessageDialog(this, "La Opción Elegida Es Incorrecta....");
-                    break;
             }
    } 
         
