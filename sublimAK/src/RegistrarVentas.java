@@ -9,38 +9,21 @@ public class RegistrarVentas {
         this.app = app;
         this.ventana = app;
     }
-    public int buscarProducto(String nombre){
-        for (int i = 0; i < app.inventario.u; i++){
-        if (app.inventario.nombres[i] != null && app.inventario.nombres[i].equalsIgnoreCase(nombre)) {
-            return i;
-        }
-    }
-    return -1;
-    }
-    public int buscarProductoXCodigo(int codigo){
-        for (int i = 0; i < app.inventario.u; i++){
-        if (app.inventario.codigos[i] == codigo) {
-            return i;
-        }
-    }
-    return -1;
-    }
 
     public void registrarventa() {
+        if (app.inventario.u == 0) {
+            JOptionPane.showMessageDialog(ventana, "No Hay Productos Registrados En El Inventario");
+            return;
+            }
         int encontrado = -1;
         String [] codigoONombre = {"Registrar Por Nombre", "Registrar Por Codigo", "Cancelar"};
         int eleccionNombreCodigo = JOptionPane.showOptionDialog(app, "¿Registrar Venta Con Nombre O Codigo?", "Menú De Registro De Ventas", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, codigoONombre, codigoONombre[0]);
-        if(eleccionNombreCodigo == -1)return;
+        if(eleccionNombreCodigo == -1 || eleccionNombreCodigo == 2)return;
         if(eleccionNombreCodigo == 0){
             String nombreProducto = JOptionPane.showInputDialog("Escriba El Nombre Del Producto");
             if (nombreProducto == null) return; // usuario canceló
 
-             if (app.inventario.u == 0) {
-            JOptionPane.showMessageDialog(ventana, "No Hay Productos Registrados En El Inventario");
-            return;
-            }
-
-            encontrado = buscarProducto(nombreProducto);
+            encontrado = app.buscador.buscarProductoXNombre(nombreProducto);
         
             if (encontrado == -1) {
                 JOptionPane.showMessageDialog(ventana, "Producto No Encontrado En El Inventario");
@@ -48,27 +31,22 @@ public class RegistrarVentas {
             }}
         
         if(eleccionNombreCodigo == 1){
-            int codigoBusqueda = 0;
             while (true) {
             String codigoBusquedastr = JOptionPane.showInputDialog("Escriba El Codigo Del Producto");
             if (codigoBusquedastr == null) return; // usuario canceló
-
-            if (app.inventario.u == 0) {
-            JOptionPane.showMessageDialog(ventana, "No Hay Productos Registrados En El Inventario");
-            return;
-            }
             try{
-                codigoBusqueda = Integer.parseInt(codigoBusquedastr);
+                int codigoBusqueda = Integer.parseInt(codigoBusquedastr);
+                encontrado = app.buscador.buscarProductoXCodigo(codigoBusqueda);
+                break;
             }catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(app, "Use Solo Números Al Escribir El Codigo");
-                continue;
             }
-            encontrado= buscarProductoXCodigo(codigoBusqueda);   
-            if(encontrado == -1){JOptionPane.showMessageDialog(app, "Producto No Encontrado En El Inventario");continue;}
-            break;
-            }
+
         }
-        if(eleccionNombreCodigo == 2)return;
+    }
+        if(encontrado == -1){
+                JOptionPane.showMessageDialog(app, "Producto No Encontrado En El Inventario");return;
+            }
             while(true){//While importante para retornar a la funcion menu
                     int cantidadVendida = 0;
                     String cantidadVendidastr = JOptionPane.showInputDialog("Escriba La Cantidad De " + app.inventario.nombres[encontrado] + " Vendida");
@@ -94,7 +72,7 @@ public class RegistrarVentas {
                     int eleccionPrecioVenta = JOptionPane.showOptionDialog(app, "Elija Una Opción", "Menú De Registro De Ventas", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesRegistrarPrecio, botonesRegistrarPrecio[0]);
 
                     switch (eleccionPrecioVenta) {
-                        case -1:
+                        case -1, 2:
                             return;
                         case 0:
                              // Calcular total y sumar a la cuenta
@@ -128,11 +106,10 @@ public class RegistrarVentas {
                             finalizarventa(encontrado, cantidadVendida, totalVentaTemp);
                             return;
                         }
-                        case 2:
-                           return;
                     }
-                }
             }
+        }
+                
 
     private void finalizarventa(int indice, int cantidad, double totalVenta){
                     app.cuenta.dinero += (float) totalVenta;

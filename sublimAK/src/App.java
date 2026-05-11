@@ -5,11 +5,13 @@ public class App extends JFrame{
     CuentaEmpresa cuenta;
     Inventario inventario;
     RegistrarVentas registro;
+    BuscadorProductos buscador;
 
     public App(){
     cuenta = new CuentaEmpresa(this);
     inventario = new Inventario(this);
     registro = new RegistrarVentas(this);
+    buscador = new BuscadorProductos(this);
 
     // ← cargar datos guardados
     Datos.cargarCuenta(cuenta);
@@ -43,7 +45,7 @@ public class App extends JFrame{
                     System.exit(0);
                     break;
                 case 4:
-                    JOptionPane.showMessageDialog(this, "La version De Este Programa Es La 1.0.3\n\nNuevos Arreglos De Esta Versión:\n\n1. Se Añade Registro De Ventas Con Codigo.");
+                    JOptionPane.showMessageDialog(this, "La version De Este Programa Es La 1.0.3\n\nNuevos Arreglos De Esta Versión:\n\n1. Se Añade Registro De Ventas Con Codigo.\n\n2. Arreglos Internos");
                     continue;
                 default:
                     JOptionPane.showMessageDialog(this, "La Opción Elegida Es Incorrecta....");

@@ -243,9 +243,20 @@ public void buscarProductoXCodigo() {
                 break;
         }
     }
-    
+    public void nombreOCodigo(){
+        String [] codigoONombre = {"Buscar Producto Por Nombre", "Buscar Producto Por Codigo", "Cancelar"};
+        int eleccionNombreCodigo = JOptionPane.showOptionDialog(app, "¿Registrar Venta Con Nombre O Codigo?", "Menú De Registro De Ventas", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, codigoONombre, codigoONombre[0]);
+        switch (eleccionNombreCodigo) {
+            case -1:
+                return;
+            case 0:
+
+            default:
+                break;
+        }
+    }
 public void inventario(){//funcion menu inventario
-        String[] botonesMenuInventario = {"Ver Inventario", "Agregar Producto", "Agregar Stock", "Menú Principal", "Salir"};
+        String[] botonesMenuInventario = {"Ver Inventario", "Agregar Producto", "Agregar Stock", "Modificar Inventario","Menú Principal", "Salir"};
         int opcionMenuInventario = JOptionPane.showOptionDialog(ventana, "Productos E Inventario", "Menu Inventario", 
         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMenuInventario, botonesMenuInventario[0]);
         try {
@@ -266,8 +277,11 @@ public void inventario(){//funcion menu inventario
                 agregarStock();
                 break;
             case 3:
+                
                 return;
             case 4:
+
+            case 5:
                 System.exit(0);
             default:
                 JOptionPane.showMessageDialog(ventana, "Opción no disponible");
