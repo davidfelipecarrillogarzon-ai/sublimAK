@@ -50,7 +50,7 @@ public class App extends JFrame{
                 case 4:
                     System.exit(0);
                 case 5:
-                    JOptionPane.showMessageDialog(this, "La version De Este Programa Es La 1.0.4\n\nNuevos Arreglos De Esta Versión:\n\n1. Se Añade Función De Control De Insumos.\n\n2. Arreglos Internos");
+                    JOptionPane.showMessageDialog(this, "La version De Este Programa Es La 1.0.5\n\nNuevos Arreglos De Esta Versión:\n\n1. Se Añade Función De Editar Productos De Stock.\n\n2. Arreglos Internos");
                     continue;
             }
    } 

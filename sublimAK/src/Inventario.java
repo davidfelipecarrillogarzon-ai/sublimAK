@@ -243,17 +243,76 @@ public void buscarProductoXCodigo() {
                 break;
         }
     }
-    public void nombreOCodigo(){
-        String [] codigoONombre = {"Buscar Producto Por Nombre", "Buscar Producto Por Codigo", "Cancelar"};
-        int eleccionNombreCodigo = JOptionPane.showOptionDialog(app, "¿Registrar Venta Con Nombre O Codigo?", "Menú De Registro De Ventas", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, codigoONombre, codigoONombre[0]);
-        switch (eleccionNombreCodigo) {
-            case -1:
+    public void editarProducto(){
+        String productoAModificar = JOptionPane.showInputDialog("Escriba El Nombre Del Producto A Modificar");
+        int productoAModificarEncontrado = app.buscador.buscarProductoXNombre(productoAModificar);
+        if(productoAModificarEncontrado ==  -1){JOptionPane.showMessageDialog(app, "Producto No Encontrado En El Inventario");return;}
+
+        String[] botonesModificarInventario = {"Nombre", "Precio", "Stock", "Codigo", "Volver"};
+        int opcionModificarInventario = JOptionPane.showOptionDialog(ventana, "¿Qué Desea Modificar?", "Menu Inventario", 
+        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesModificarInventario, botonesModificarInventario[0]);
+        
+        switch (opcionModificarInventario) {
+            case -1,4:
                 return;
             case 0:
+                while (true) {
+                    String nuevoNombre = JOptionPane.showInputDialog("Escriba El Nuevo Nombre Para El Producto " + nombres[productoAModificarEncontrado]);
+                    if(nuevoNombre == null){return;}
+                    if(nuevoNombre.trim().isEmpty()){JOptionPane.showMessageDialog(app, "No Deje El Campo Vacio"); continue;}
 
-            default:
+                    nombres[productoAModificarEncontrado] = nuevoNombre;
+                    break;
+                }
+                Datos.guardarInventario(this);
+                break;
+            case 1:
+                while (true) {
+                String nuevoPreciostr = JOptionPane.showInputDialog("Escriba El Nuevo Precio Del Producto" + nombres[productoAModificarEncontrado]);
+                if(nuevoPreciostr == null){return;}
+                if(nuevoPreciostr.trim().isEmpty()){JOptionPane.showMessageDialog(app, "No Deje El Campo Vacio"); continue;} 
+                try {
+                    double nuevoPrecio = Double.parseDouble(nuevoPreciostr);
+                    precios[productoAModificarEncontrado] = nuevoPrecio;
+                    Datos.guardarInventario(this);
+                    break;
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(app, "Escriba Solo Números");
+                }  
+                }
+                break;
+            case 2:
+                while (true) {
+                String nuevoStockstr = JOptionPane.showInputDialog("Escriba El Nuevo Stock Del Producto" + nombres[productoAModificarEncontrado]);
+                if(nuevoStockstr == null){return;}
+                if(nuevoStockstr.trim().isEmpty()){JOptionPane.showMessageDialog(app, "No Deje El Campo Vacio"); continue;} 
+                try {
+                    int nuevoStock = Integer.parseInt(nuevoStockstr);
+                    stocks[productoAModificarEncontrado] = nuevoStock;
+                    Datos.guardarInventario(this);
+                    break;
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(app, "Escriba Solo Números");
+                }  
+                }
+                break;
+            case 3:
+                while (true) {
+                String nuevoCodigostr = JOptionPane.showInputDialog("Escriba El Nuevo Codigo Del Producto" + nombres[productoAModificarEncontrado]);
+                if(nuevoCodigostr == null){return;}
+                if(nuevoCodigostr.trim().isEmpty()){JOptionPane.showMessageDialog(app, "No Deje El Campo Vacio"); continue;} 
+                try {
+                    int nuevoCodigo = Integer.parseInt(nuevoCodigostr);
+                    codigos[productoAModificarEncontrado] = nuevoCodigo;
+                    Datos.guardarInventario(this);
+                    break;
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(app, "Escriba Solo Números");
+                }  
+                }
                 break;
         }
+
     }
 public void inventario(){//funcion menu inventario
         String[] botonesMenuInventario = {"Ver Inventario", "Agregar Producto", "Agregar Stock", "Modificar Inventario","Menú Principal", "Salir"};
@@ -277,10 +336,10 @@ public void inventario(){//funcion menu inventario
                 agregarStock();
                 break;
             case 3:
-                
-                return;
+            editarProducto();
+            break;
             case 4:
-
+                return;
             case 5:
                 System.exit(0);
             default:

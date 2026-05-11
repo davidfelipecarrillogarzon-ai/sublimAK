@@ -36,12 +36,11 @@ public class BuscadorProductos {
         String[] botonesTipoBusqueda = {"Por Nombre", "Por Codigo", "Cancelar"};
         int opcionBotonesBusqueda = JOptionPane.showOptionDialog(ventana, "Busqueda De Productos", "¿Como Desea Ralizar La Busqueda Del Producto?", 
         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesTipoBusqueda, botonesTipoBusqueda[0]);
-
-        while (true) {
             switch (opcionBotonesBusqueda) {
             case -1:
                 return;
             case 0:
+                while (true) {
             String nombreProducto = JOptionPane.showInputDialog("Escriba El Nombre Del Producto");
             if (nombreProducto == null) return; // usuario canceló
 
@@ -49,36 +48,33 @@ public class BuscadorProductos {
             JOptionPane.showMessageDialog(ventana, "No Hay Productos Registrados En El Inventario");
             return;
             }
-
-            encontradoXNombre = buscarProductoXNombre(nombreProducto);
         
             if (encontradoXNombre == -1) {
                 JOptionPane.showMessageDialog(ventana, "Producto No Encontrado En El Inventario");
                 return;
             }
-            break;
+            encontradoXNombre = buscarProductoXNombre(nombreProducto);
+            return;
+                }
             case 1:
-            String busquedaXCodigostr = JOptionPane.showInputDialog(app, "Escriba El Codigo Del Producto");
+            String busquedaXCodigostr = "";
             while (true) {
+                busquedaXCodigostr = JOptionPane.showInputDialog(app, "Escribe El Codigo Del Producto");
                 if(busquedaXCodigostr == null){return;}//Usuario canceló
-                while(busquedaXCodigostr.trim().isEmpty()){
-                    JOptionPane.showMessageDialog(app, "No Deje El Campo Vacío");
-                    busquedaXCodigostr = JOptionPane.showInputDialog(app, "Escribe El Codigo Del Producto"); 
-                    if(busquedaXCodigostr == null)return;
-                    try {
-                       busquedaXCodigo = Integer.parseInt(busquedaXCodigostr);
-                        } catch (NumberFormatException e) {
-                           JOptionPane.showMessageDialog(app, "Solo Puede Usar Números");
-                           continue;
-                            }
+                if(busquedaXCodigostr.trim().isEmpty()){
+                JOptionPane.showMessageDialog(app, "No Deje El Campo Vacío");
+                continue;
             }
-            encontradoXCodigo = buscarProductoXCodigo(busquedaXCodigo);
-
+            try {
+                 busquedaXCodigo = Integer.parseInt(busquedaXCodigostr);
+                 encontradoXCodigo = buscarProductoXCodigo(busquedaXCodigo);
+                 break;
+                } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(app, "Solo Puede Usar Números");
+                continue;
+                            }
         }
-        
         }
-
-    }
 }
 
 }

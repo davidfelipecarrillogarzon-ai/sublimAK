@@ -28,6 +28,7 @@ public static void cargarInsumos() {
 
         BufferedReader br = new BufferedReader(new FileReader(archivo));
         String linea;
+        Insumos.listaInsumos.clear();
         while ((linea = br.readLine()) != null) {
             String[] partes = linea.split(";");
             String nombre = partes[0];
