@@ -6,6 +6,40 @@ static final String CARPETA = System.getProperty("user.home") + "/SublimAK/datos
 static final String RUTA_INVENTARIO = CARPETA + "inventario.txt";
 static final String RUTA_CUENTA = CARPETA + "cuenta.txt";
 static final String RUTA_HISTORIAL = CARPETA + "historial.txt";
+static final String RUTA_INSUMOS = CARPETA + "insumos.txt";
+
+    public static void guardarInsumos() {
+    try {
+        new File(CARPETA).mkdirs();
+        PrintWriter pw = new PrintWriter(new FileWriter(RUTA_INSUMOS));
+        for (Insumos ins : Insumos.listaInsumos) {
+            pw.println(ins.nombreInsumo + ";" + ins.precioInsumos + ";" + ins.stockInsumos);
+        }
+        pw.close();
+    } catch (IOException e) {
+        System.out.println("Error guardando insumos: " + e);
+    }
+}
+
+public static void cargarInsumos() {
+    try {
+        File archivo = new File(RUTA_INSUMOS);
+        if (!archivo.exists()) return;
+
+        BufferedReader br = new BufferedReader(new FileReader(archivo));
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(";");
+            String nombre = partes[0];
+            double precio = Double.parseDouble(partes[1]);
+            int stock = Integer.parseInt(partes[2]);
+            Insumos.listaInsumos.add(new Insumos(nombre, stock, precio));
+        }
+        br.close();
+    } catch (IOException e) {
+        System.out.println("Error cargando insumos: " + e);
+    }
+}
 
     public static void guardarInventario(Inventario inv) {
         try {
