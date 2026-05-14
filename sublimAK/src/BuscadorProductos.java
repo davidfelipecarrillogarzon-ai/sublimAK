@@ -16,7 +16,7 @@ public class BuscadorProductos {
 
 
     public int buscarProductoXNombre(String nombre){
-        for (int i = 0; i < app.inventario.u; i++){
+        for (int i = 0; i < app.inventario.totalProductos; i++){
         if (app.inventario.nombres[i] != null && app.inventario.nombres[i].equalsIgnoreCase(nombre)) {
             return i;
         }
@@ -24,7 +24,7 @@ public class BuscadorProductos {
     return -1;
     }
     public int buscarProductoXCodigo(int codigo){
-        for (int i = 0; i < app.inventario.u; i++){
+        for (int i = 0; i < app.inventario.totalProductos; i++){
         if (app.inventario.codigos[i] == codigo) {
             return i;
         }
@@ -44,7 +44,7 @@ public class BuscadorProductos {
             String nombreProducto = JOptionPane.showInputDialog("Escriba El Nombre Del Producto");
             if (nombreProducto == null) return; // usuario canceló
 
-            if (app.inventario.u == 0) {
+            if (app.inventario.totalProductos == 0) {
             JOptionPane.showMessageDialog(ventana, "No Hay Productos Registrados En El Inventario");
             return;
             }

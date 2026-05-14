@@ -46,7 +46,7 @@ public static void cargarInsumos() {
         try {
             new File(CARPETA).mkdirs();
             PrintWriter pw = new PrintWriter(new FileWriter(RUTA_INVENTARIO));
-            for (int i = 0; i < inv.u; i++) {
+            for (int i = 0; i < inv.totalProductos; i++) {
                 pw.println(inv.nombres[i] + ";" + inv.precios[i] + ";" + inv.stocks[i] + ";" + inv.codigos[i]);
             }
             pw.close();
@@ -87,11 +87,11 @@ public static void cargarInsumos() {
         String linea;
         while ((linea = br.readLine()) != null) {
             String[] partes = linea.split(";");
-            inv.nombres[inv.u] = partes[0];
-            inv.precios[inv.u] = Double.parseDouble(partes[1]);
-            inv.stocks[inv.u] = Integer.parseInt(partes[2]);
-            inv.codigos[inv.u] = Integer.parseInt(partes[3]);
-            inv.u++;
+            inv.nombres[inv.totalProductos] = partes[0];
+            inv.precios[inv.totalProductos] = Double.parseDouble(partes[1]);
+            inv.stocks[inv.totalProductos] = Integer.parseInt(partes[2]);
+            inv.codigos[inv.totalProductos] = Integer.parseInt(partes[3]);
+            inv.totalProductos++;
         }
         br.close();
     } catch (IOException e) {

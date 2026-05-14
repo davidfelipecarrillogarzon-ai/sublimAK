@@ -11,7 +11,7 @@ public class RegistrarVentas {
     }
 
     public void registrarventa() {
-        if (app.inventario.u == 0) {
+        if (app.inventario.totalProductos == 0) {
             JOptionPane.showMessageDialog(ventana, "No Hay Productos Registrados En El Inventario");
             return;
             }
