@@ -333,7 +333,7 @@ public void buscarProductoXCodigo() {
         int productoAModificarEncontrado = app.buscador.buscarProductoXNombre(productoAEliminar);
         if(productoAModificarEncontrado ==  -1){JOptionPane.showMessageDialog(app, "Producto No Encontrado En El Inventario");return;}  
 
-        int confirmacionEliminarProducto = JOptionPane.showConfirmDialog(ventana, "¿Esta Seguro Que Desea Eliminar " + nombres[productoAModificarEncontrado] + "? Del Inventario, Esta Opcion No Se Puede Deshacer", "¿Confirme La ELiminación?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int confirmacionEliminarProducto = JOptionPane.showConfirmDialog(ventana, "¿Esta Seguro Que Desea Eliminar " + nombres[productoAModificarEncontrado] + "Del Inventario? \n!Esta Opcion No Se Puede Deshacer¡", "¿Confirme La Eliminación?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(confirmacionEliminarProducto != JOptionPane.YES_OPTION){return;}
 
         // Desplazar todos los arreglos una posición hacia la izquierda
