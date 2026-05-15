@@ -57,12 +57,110 @@ public class Insumos {
         Insumos nuevoInsumo = new Insumos(nombreInsumo, stockInsumos, precioInsumos);
         añadirInsumo(nuevoInsumo);
     }
+    public void comprarInsumo(){
+    if(listaInsumos.isEmpty()){
+        JOptionPane.showMessageDialog(app, "No Hay Insumos Registrados");
+        return;
+    }
 
-    public void menuInsumos(){
-        String[] botonesMenuInsumo = {"Agregar Insumo", "Ver Insumos", "Editar Insumos","Borrar Insumo", "Volver Al Menu Principal"};
-        int opcionMenuPrincipal = JOptionPane.showOptionDialog(app, "¿Qué Quiere Hacer Hoy?", "Menú Principal",JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMenuInsumo, botonesMenuInsumo[0]);       
-        switch (opcionMenuPrincipal){
-            case -1, 4:
+    // Buscar el insumo
+    String nombre = JOptionPane.showInputDialog(app, "Escriba El Nombre Del Insumo Que Compró");
+    if(nombre == null) return;
+
+    Insumos encontrado = null;
+    for(Insumos ins : listaInsumos){
+        if(ins.nombreInsumo.equalsIgnoreCase(nombre)){
+            encontrado = ins;
+            break;
+        }
+    }
+    if(encontrado == null){
+        JOptionPane.showMessageDialog(app, "Insumo No Encontrado");
+        return;
+    }
+
+    // Cantidad comprada
+    int cantidadComprada = 0;
+    while(true){
+        String cantidadStr = JOptionPane.showInputDialog(app, "¿Cuántas Unidades De " + encontrado.nombreInsumo + " Compró?");
+        if(cantidadStr == null) return;
+        if(cantidadStr.trim().isEmpty()){ JOptionPane.showMessageDialog(app, "No Deje El Campo Vacío"); continue; }
+        try{
+            cantidadComprada = Integer.parseInt(cantidadStr);
+            if(cantidadComprada <= 0){ JOptionPane.showMessageDialog(app, "La Cantidad Debe Ser Mayor A Cero"); continue; }
+            break;
+        } catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(app, "Escriba Solo Números");
+        }
+    }
+
+    // Precio total pagado
+    double totalPagado = 0;
+    while(true){
+        String precioStr = JOptionPane.showInputDialog(app, "¿Cuánto Pagó En Total Por " + encontrado.nombreInsumo + "?");
+        if(precioStr == null) return;
+        if(precioStr.trim().isEmpty()){ JOptionPane.showMessageDialog(app, "No Deje El Campo Vacío"); continue; }
+        try{
+            totalPagado = Double.parseDouble(precioStr);
+            if(totalPagado <= 0){ JOptionPane.showMessageDialog(app, "El Precio Debe Ser Mayor A Cero"); continue; }
+            break;
+        } catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(app, "Escriba Solo Números");
+        }
+    }
+
+    // Medio de pago
+    String[] medios = {"Efectivo", "Nequi"};
+    int medioPagoOpcion = JOptionPane.showOptionDialog(app, "¿Con Qué Pagó?", "Medio De Pago",
+        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, medios, medios[0]);
+    if(medioPagoOpcion == -1) return;
+
+    // Verificar saldo suficiente
+    if(medioPagoOpcion == 0 && totalPagado > app.cuenta.dinero){
+        JOptionPane.showMessageDialog(app, "No Tiene Suficiente Dinero En Efectivo");
+        return;
+    }
+    if(medioPagoOpcion == 1 && totalPagado > app.cuenta.dineroDigital){
+        JOptionPane.showMessageDialog(app, "No Tiene Suficiente Dinero En Nequi");
+        return;
+    }
+
+    // Descontar dinero y registrar movimiento
+    String medioPago = (medioPagoOpcion == 0) ? "Efectivo" : "Nequi";
+    if(medioPagoOpcion == 0){
+        app.cuenta.dinero -= (float) totalPagado;
+    } else {
+        app.cuenta.dineroDigital -= (float) totalPagado;
+    }
+
+    app.cuenta.historial.add(new CuentaEmpresa.Movimiento(
+        app.cuenta.contadorMovimientos++,
+        "Compra Insumo " + medioPago + " - " + encontrado.nombreInsumo,
+        (float) totalPagado));
+
+    // Actualizar stock del insumo
+    encontrado.stockInsumos += cantidadComprada;
+
+    // Guardar todo
+    Datos.guardarInsumos();
+    Datos.guardarCuenta(app.cuenta);
+    Datos.guardarHistorial(app.cuenta);
+
+    JOptionPane.showMessageDialog(app,
+        "Compra Registrada\nInsumo: " + encontrado.nombreInsumo +
+        "\nCantidad Agregada: " + cantidadComprada +
+        "\nTotal Pagado: $" + totalPagado +
+        "\nMedio: " + medioPago +
+        "\nNuevo Stock: " + encontrado.stockInsumos);
+}
+
+public void menuInsumos(){
+    while(true){ // ← loop que le faltaba
+        String[] botonesMenuInsumo = {"Agregar Insumo", "Ver Insumos", "Comprar Insumo", "Editar Insumos", "Borrar Insumo", "Volver Al Menu Principal"};
+        int opcion = JOptionPane.showOptionDialog(app, "¿Qué Quiere Hacer?", "Menú Insumos",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMenuInsumo, botonesMenuInsumo[0]);
+        switch(opcion){
+            case -1, 5:
                 return;
             case 0:
                 agregarDatosInsumos();
@@ -71,13 +169,17 @@ public class Insumos {
                 mensajeInventarioInsumos();
                 break;
             case 2:
-                editarInsumo();
+                comprarInsumo(); // ← nuevo
                 break;
             case 3:
+                editarInsumo();
+                break;
+            case 4:
                 borrarInsumo();
                 break;
         }
     }
+}
 
 public void mensajeInventarioInsumos(){
     String mensaje = String.format("%-20s %-10s %-8s%n", "Nombre", "Precio", "Stock");
