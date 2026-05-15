@@ -133,7 +133,7 @@ private void finalizarventa(int indice, int cantidad, double totalVenta){
 
     app.cuenta.historial.add(new CuentaEmpresa.Movimiento(
         app.cuenta.contadorMovimientos++,
-        "Venta " + medioPago + " - " + app.inventario.nombres[indice] + " | Cliente: " + nombreCliente,
+        "Venta " + medioPago + " - " + app.inventario.nombres[indice] + " [Cliente: " + nombreCliente + "]",
         (float) totalVenta));
 
     app.inventario.stocks[indice] -= cantidad;
