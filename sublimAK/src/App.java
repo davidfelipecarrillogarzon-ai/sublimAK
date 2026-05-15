@@ -50,7 +50,7 @@ public class App extends JFrame{
                 case 4:
                     System.exit(0);
                 case 5:
-                    JOptionPane.showMessageDialog(this, "La version De Este Programa Es La 1.0.6\n\nNuevos Arreglos De Esta Versión:\n\n1.Se Agrega Opción De Eliminar Productos");
+                    JOptionPane.showMessageDialog(this, "La version De Este Programa Es La 1.0.6\n\nNuevos Arreglos De Esta Versión:\n\n1.Se Agrega Opción De Eliminar Productos\n\n2.Se Dispone Opción Para Registrar El Tipo De Pago\n\n3.Se Dispone Opción Para Agregar Nombre Del Cliente En El Registro De Ventas");
                     continue;
             }
    } 

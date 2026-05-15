@@ -111,27 +111,42 @@ public class RegistrarVentas {
         }
                 
 
-    private void finalizarventa(int indice, int cantidad, double totalVenta){
-        String[] botonesMedioPago = {"Efectivo", "Nequi"};
-        int eleccionMedioPago = JOptionPane.showOptionDialog(app, "¿Porque Medio Se Realizó El Pago?", "Medio De Pago", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMedioPago, botonesMedioPago[0]);
-        if(eleccionMedioPago == 0) {
-            app.cuenta.dinero += (float) totalVenta;
-        }else if(eleccionMedioPago == 1){app.cuenta.dineroDigital += (float) totalVenta;}
-        else{return;}
-        String medioPago = (eleccionMedioPago == 0) ? "Efectivo" : "Nequi";
-        app.cuenta.historial.add(new CuentaEmpresa.Movimiento(
-        app.cuenta.contadorMovimientos++,
-        "Venta " + medioPago + " - " + app.inventario.nombres[indice],
-        (float) totalVenta));
-        app.inventario.stocks[indice] -= cantidad;
+private void finalizarventa(int indice, int cantidad, double totalVenta){
+    
+    String nombreCliente = JOptionPane.showInputDialog(app, "Escriba El Nombre Del Cliente");
+    if(nombreCliente == null) return;
+    if(nombreCliente.trim().isEmpty()) nombreCliente = "Cliente General";
 
+    String[] botonesMedioPago = {"Efectivo", "Nequi"};
+    int eleccionMedioPago = JOptionPane.showOptionDialog(app, "¿Por Qué Medio Se Realizó El Pago?", "Medio De Pago",
+        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, botonesMedioPago, botonesMedioPago[0]);
 
-        //Mensaje de registro de ventas
-        JOptionPane.showMessageDialog(ventana,"Venta Registrada\nProducto: " + app.inventario.nombres[indice] + "\nCantidad: " + cantidad + "\nTotal: $" + totalVenta);
-
-        //Guardado de datos
-        Datos.guardarInventario(app.inventario);        
-        Datos.guardarCuenta(app.cuenta);     
-        Datos.guardarHistorial(app.cuenta); 
+    if(eleccionMedioPago == 0) {
+        app.cuenta.dinero += (float) totalVenta;
+    } else if(eleccionMedioPago == 1) {
+        app.cuenta.dineroDigital += (float) totalVenta;
+    } else {
+        return;
     }
+
+    String medioPago = (eleccionMedioPago == 0) ? "Efectivo" : "Nequi";
+
+    app.cuenta.historial.add(new CuentaEmpresa.Movimiento(
+        app.cuenta.contadorMovimientos++,
+        "Venta " + medioPago + " - " + app.inventario.nombres[indice] + " | Cliente: " + nombreCliente,
+        (float) totalVenta));
+
+    app.inventario.stocks[indice] -= cantidad;
+
+
+    JOptionPane.showMessageDialog(ventana,
+        "Venta Registrada\nCliente: " + nombreCliente +
+        "\nProducto: " + app.inventario.nombres[indice] +
+        "\nCantidad: " + cantidad +
+        "\nTotal: $" + totalVenta);
+
+    Datos.guardarInventario(app.inventario);
+    Datos.guardarCuenta(app.cuenta);
+    Datos.guardarHistorial(app.cuenta);
+}
 }
