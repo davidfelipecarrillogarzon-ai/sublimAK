@@ -50,8 +50,23 @@ public class CuentaEmpresa {
 
             texto += m.toString() + "\n";
         }
-            JOptionPane.showMessageDialog(this.app, texto);
-            return;
+// 1. Crear el JTextArea y asignarle el texto
+JTextArea textArea = new JTextArea(texto);
+textArea.setEditable(false); // Para que el usuario no pueda modificar el historial
+textArea.setLineWrap(true);   // Ajusta el texto al ancho para que no se corte
+textArea.setWrapStyleWord(true);
+
+// 2. Definir un tamaño preferido para que la ventana no se abra gigante o muy pequeña
+// (Filas, Columnas) -> Ajusta según prefieras
+textArea.setRows(15);
+textArea.setColumns(40);
+
+// 3. Envolver el JTextArea en un JScrollPane
+JScrollPane scrollPane = new JScrollPane(textArea);
+
+// 4. Mostrar el JScrollPane en el JOptionPane
+JOptionPane.showMessageDialog(this.app, scrollPane, "Historial de Movimientos", JOptionPane.INFORMATION_MESSAGE);
+return;
     }
 
     public void sumarDinero(){
